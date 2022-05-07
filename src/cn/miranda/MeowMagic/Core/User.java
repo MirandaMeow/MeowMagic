@@ -1,10 +1,9 @@
 package cn.miranda.MeowMagic.Core;
 
 import cn.miranda.MeowMagic.Manager.ConfigManager;
-import cn.miranda.MeowMagic.Manager.MessageManager;
 import org.bukkit.entity.Player;
 
-import static cn.miranda.MeowMagic.Manager.ConfigManager.playerGainData;
+import static cn.miranda.MeowMagic.Manager.ConfigManager.playerRegain;
 
 public class User {
     private final Player player;
@@ -59,25 +58,25 @@ public class User {
      * 保存玩家数据
      */
     private void save() {
-        playerGainData.set(String.format("%s.maxMana", this.playerName), 100);
-        playerGainData.set(String.format("%s.gainMana", this.playerName), 1);
-        ConfigManager.saveConfig(playerGainData);
+        playerRegain.set(String.format("%s.maxMana", this.playerName), 100);
+        playerRegain.set(String.format("%s.gainMana", this.playerName), 1);
+        ConfigManager.saveConfig(playerRegain);
     }
 
     /**
      * 载入玩家数据
      */
     private void load() {
-        if (playerGainData.getString(this.playerName) == null) {
+        if (playerRegain.getString(this.playerName) == null) {
             this.maxMana = 100;
             this.gainMana = 1;
-            playerGainData.set(String.format("%s.maxMana", this.playerName), 100);
-            playerGainData.set(String.format("%s.gainMana", this.playerName), 1);
+            playerRegain.set(String.format("%s.maxMana", this.playerName), 100);
+            playerRegain.set(String.format("%s.gainMana", this.playerName), 1);
             this.save();
             return;
         }
-        int maxMana = playerGainData.getInt(String.format("%s.maxMana", this.playerName));
-        int gainMana = playerGainData.getInt(String.format("%s.gainMana", this.playerName));
+        int maxMana = playerRegain.getInt(String.format("%s.maxMana", this.playerName));
+        int gainMana = playerRegain.getInt(String.format("%s.gainMana", this.playerName));
         this.maxMana = maxMana;
         this.gainMana = gainMana;
     }

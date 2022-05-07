@@ -9,9 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ConfigManager {
-    public static YamlConfiguration playerGainData;
+    public static YamlConfiguration playerRegain;
     private static final HashMap<YamlConfiguration, File> configs = new HashMap<>();
 
+    /**
+     * 载入配置文件
+     *
+     * @param fileName 配置文件名
+     * @return yaml 配置文件对象
+     */
     private static YamlConfiguration load(String fileName) {
         File configFile = new File(MeowMagic.plugin.getDataFolder(), fileName);
         if (!configFile.exists()) {
@@ -22,10 +28,16 @@ public class ConfigManager {
         return config;
     }
 
+    /**
+     * 载入所有配置文件
+     */
     public static void loadConfigs() {
-        playerGainData = load("players.yml");
+        playerRegain = load("players.yml");
     }
 
+    /**
+     * 保存所有配置文件
+     */
     public static void saveConfigs() {
         try {
             for (Map.Entry<YamlConfiguration, File> current : configs.entrySet()) {
@@ -38,6 +50,11 @@ public class ConfigManager {
         }
     }
 
+    /**
+     * 保存指定配置
+     *
+     * @param yamlConfiguration 将要被保存的配置
+     */
     public static void saveConfig(YamlConfiguration yamlConfiguration) {
         File file = configs.get(yamlConfiguration);
         try {
