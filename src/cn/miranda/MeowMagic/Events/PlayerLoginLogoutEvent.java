@@ -1,4 +1,4 @@
-package cn.miranda.MeowMagic.Listener;
+package cn.miranda.MeowMagic.Events;
 
 import cn.miranda.MeowMagic.Core.User;
 import cn.miranda.MeowMagic.Manager.MessageManager;

@@ -2,7 +2,7 @@ package cn.miranda.MeowMagic;
 
 import cn.miranda.MeowMagic.Core.User;
 import cn.miranda.MeowMagic.Manager.ConfigManager;
-import cn.miranda.MeowMagic.Manager.ListenerRegister;
+import cn.miranda.MeowMagic.Manager.ListenerManager;
 import cn.miranda.MeowMagic.Manager.MessageManager;
 import cn.miranda.MeowMagic.Timer.AutoRegainMana;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public class MeowMagic extends JavaPlugin {
      */
     public void onEnable() {
         MessageManager.Console("[猫子魔法] 启动");
-        ListenerRegister.registerAll();
+        ListenerManager.registerAll();
         regain = AutoRegainMana.getInstance();
         regain.setOn();
         ConfigManager.loadConfigs();

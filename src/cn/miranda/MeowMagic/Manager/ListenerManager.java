@@ -1,7 +1,7 @@
 package cn.miranda.MeowMagic.Manager;
 
-import cn.miranda.MeowMagic.Listener.BanDropExpEvent;
-import cn.miranda.MeowMagic.Listener.PlayerLoginLogoutEvent;
+import cn.miranda.MeowMagic.Events.BanDropExpEvent;
+import cn.miranda.MeowMagic.Events.PlayerLoginLogoutEvent;
 import cn.miranda.MeowMagic.MeowMagic;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListenerRegister {
+public class ListenerManager {
     private static final List<Listener> list = new ArrayList<>();
 
     /**
