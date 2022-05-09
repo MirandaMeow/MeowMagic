@@ -8,7 +8,10 @@ import org.bukkit.event.block.Action;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -135,7 +138,7 @@ public class Skill {
      * @return 处理后的技能描述文本行
      */
     private String replace(String line, int level) {
-        String pattern = "%(.+)%";
+        String pattern = ".*?%(.+?)%.*";
         Pattern r = Pattern.compile(pattern);
         Matcher matcher = r.matcher(line);
         if (matcher.find()) {
@@ -149,7 +152,7 @@ public class Skill {
                 case "cooldown":
                     return line.replace("%cooldown%", this.coolDown.get(level).toString());
                 case "chance":
-                    return line.replace("%chance%", String.valueOf(this.chance.get(level) * 100));
+                    return line.replace("%chance%", String.format("%.2f", this.chance.get(level) * 100));
             }
         } else {
             return line;
