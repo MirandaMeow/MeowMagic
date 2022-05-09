@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.Map;
+import java.util.Random;
 
 public class PlayerSkillInvokerEvent implements Listener {
     /**
@@ -54,7 +55,7 @@ public class PlayerSkillInvokerEvent implements Listener {
         assert skill.cost != null;
         int cost = skill.cost.get(level);
         if (!user.manaCheck(cost)) {
-            MessageManager.ActionBarMessage(player, String.format("§e无法发动§c§l%s§r§e, 需要§b%d点魔法", skillName, cost));
+            MessageManager.ActionBarMessage(player, String.format("§e无法发动§c§l%s§r§e, 需要§b%d§e点魔法", skillName, cost));
             return;
         }
         int coolDown = user.skillState.checkCoolDown(skill.skillID);
@@ -62,10 +63,13 @@ public class PlayerSkillInvokerEvent implements Listener {
             MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e还未冷却, 剩余§b%d§e秒", skillName, coolDown));
             return;
         }
-        float random = (float) Math.random();
+        Random random = new Random();
+        int random_int = random.nextInt(100);
         user.reduceMana(cost);
         skill.update(skill.skillID, player, user.skillState);
-        if (random > skill.chance.get(level)) {
+        assert skill.chance != null;
+        int chance = skill.chance.get(level);
+        if (random_int > chance) {
             MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e使用失败！", skillName));
             user.skillState.failToUse(skill.skillID);
             event.setCancelled(true);
@@ -73,7 +77,6 @@ public class PlayerSkillInvokerEvent implements Listener {
         }
         MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e发动！", skillName));
         user.skillState.fireSkill(skill.skillID);
-        MessageManager.HoverMessage(player, skillName, skill.getDescription(player));
         event.setCancelled(true);
     }
 }

@@ -9,7 +9,7 @@ import static cn.miranda.MeowMagic.Manager.ConfigManager.players;
 public class User {
     private final Player player;
     private int maxMana;
-    private int gainMana;
+    private int reGainMana;
     private final String playerName;
     public SkillState skillState;
 
@@ -30,7 +30,7 @@ public class User {
     public void gainMana() {
         int mana = this.player.getLevel();
         if (mana < this.maxMana) {
-            this.player.setLevel(mana + this.gainMana);
+            this.player.setLevel(mana + this.reGainMana);
             this.player.setExp((float) this.player.getLevel() / this.maxMana);
         } else {
             this.player.setLevel(this.maxMana);
@@ -64,8 +64,76 @@ public class User {
      */
     private void save() {
         players.set(String.format("%s.maxMana", this.playerName), this.maxMana);
-        players.set(String.format("%s.gainMana", this.playerName), this.gainMana);
+        players.set(String.format("%s.gainMana", this.playerName), this.reGainMana);
         ConfigManager.saveConfig(players);
+    }
+
+    /**
+     * 获取技能等级
+     *
+     * @param skillID 技能 ID
+     * @return 技能等级
+     */
+    public int getLevel(String skillID) {
+        return players.getInt(String.format("%s.skills.%s.level", this.playerName, skillID));
+    }
+
+    /**
+     * 获取技能升级所需经验
+     *
+     * @param skillID 技能 ID
+     * @return 技能升级所需经验
+     */
+    public int getSkillMaxExp(String skillID) {
+        return players.getInt(String.format("%s.skills.%s.maxExp", this.playerName, skillID));
+    }
+
+    /**
+     * 获取技能当前经验
+     *
+     * @param skillID 技能 ID
+     * @return 技能当前经验
+     */
+    public int getSkillCurrentExp(String skillID) {
+        return players.getInt(String.format("%s.skills.%s.currentExp", this.playerName, skillID));
+    }
+
+    /**
+     * 获取每秒恢复魔法值
+     *
+     * @return 每秒恢复魔法值
+     */
+    public int getReGainMana() {
+        return this.reGainMana;
+    }
+
+    /**
+     * 获取最大魔法值
+     *
+     * @return 最大魔法值
+     */
+    public int getMaxMana() {
+        return this.maxMana;
+    }
+
+    /**
+     * 设置每秒恢复魔法
+     *
+     * @param reGainMana 每秒恢复魔法
+     */
+    public void setReGainMana(int reGainMana) {
+        this.reGainMana = reGainMana;
+        this.save();
+    }
+
+    /**
+     * 设置最大魔法
+     *
+     * @param maxMana 最大魔法
+     */
+    public void setMaxMana(int maxMana) {
+        this.maxMana = maxMana;
+        this.save();
     }
 
     /**
@@ -74,15 +142,15 @@ public class User {
     private void load() {
         if (players.getString(this.playerName) == null) {
             this.maxMana = 100;
-            this.gainMana = 1;
+            this.reGainMana = 1;
             players.set(String.format("%s.maxMana", this.playerName), this.maxMana);
-            players.set(String.format("%s.gainMana", this.playerName), this.gainMana);
+            players.set(String.format("%s.gainMana", this.playerName), this.reGainMana);
             this.skillState = new SkillState(player);
             this.save();
             return;
         }
         this.maxMana = players.getInt(String.format("%s.maxMana", this.playerName));
-        this.gainMana = players.getInt(String.format("%s.gainMana", this.playerName));
+        this.reGainMana = players.getInt(String.format("%s.gainMana", this.playerName));
         this.skillState = new SkillState(player);
     }
 

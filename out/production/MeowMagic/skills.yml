@@ -3,20 +3,21 @@ skill01:
   name: "治疗术"
   description:
     - "§e在一定时间内恢复生命值"
+    - ""
     - "§e恢复生命值 §b%power%"
     - "§e持续时间 §b%duration%"
     - "§e消耗魔法 §b%cost%"
     - "§e冷却时间 §b%cooldown%"
     - "§e成功率 §b%chance%§e%"
-  duration: [ 1, 2, 3, 4, 5 ]
-  cost: [ 1, 2, 3, 4, 5 ]
-  cooldown: [ 2, 2, 2, 2, 2 ]
+  duration: [ 2, 4, 6, 8, 10 ]
+  cost: [ 15, 20, 25, 30, 35 ]
+  cooldown: [ 15, 15, 15, 15, 15 ]
   distance: [ 0, 0, 0, 0, 0 ]
   isRange: false
-  chance: [ 1.0, 1.0, 1.0, 1.0, 0.3 ]
-  skill: heal
+  chance: [ 60, 70, 80, 90, 100 ]
+  skill: "heal"
   item: [ STICK ]
-  click: right
+  click: "right"
   sneak: true
-  update: [ 2, 3, 4, 5, 0 ]
-  power: [ 0.1, 0.2, 0.3, 0.4, 0.5 ]
+  exp: [ 30, 40, 50, 60, 0 ]
+  power: [ 5, 5, 10, 15, 20 ]

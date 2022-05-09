@@ -27,12 +27,12 @@ public class Skill {
     public final List<Integer> coolDown;
     private final List<Integer> distance;
     private final boolean isRange;
-    public final List<Float> chance;
+    public final List<Integer> chance;
     private Method skill;
     public List<Material> itemList = new ArrayList<>();
     public final List<Action> click = new ArrayList<>();
     public boolean sneak;
-    public final List<Integer> update;
+    public final List<Integer> exp;
     private final List<Integer> power;
 
     /**
@@ -67,11 +67,11 @@ public class Skill {
         this.coolDown = (List<Integer>) skill.getList("cooldown");
         this.distance = (List<Integer>) skill.getList("distance");
         this.isRange = skill.getBoolean("isRange");
-        this.chance = skill.getFloatList("chance");
+        this.chance = (List<Integer>) skill.getList("chance");
         String skillInternalID = skill.getString("skill");
         assert skillInternalID != null;
         try {
-            this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class);
+            this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class, int.class, int.class);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -88,7 +88,7 @@ public class Skill {
             click.add(Action.LEFT_CLICK_BLOCK);
         }
         this.sneak = skill.getBoolean("sneak");
-        this.update = (List<Integer>) skill.getList("update");
+        this.exp = (List<Integer>) skill.getList("exp");
         this.power = (List<Integer>) skill.getList("power");
     }
 
@@ -101,12 +101,11 @@ public class Skill {
      * @throws InvocationTargetException 报错
      * @throws IllegalAccessException    报错
      */
-    public void fire(Player player, int level) throws InvocationTargetException, IllegalAccessException {
-        int cost = this.cost.get(level);
-        int coolDown = this.coolDown.get(level);
+    public void activate(Player player, int level) throws InvocationTargetException, IllegalAccessException {
         int distance = this.distance.get(level);
-        float chance = this.chance.get(level);
-        this.skill.invoke(null, player, distance, this.isRange);
+        int duration = this.duration.get(level);
+        int power = this.power.get(level);
+        this.skill.invoke(null, player, distance, this.isRange, duration, power);
     }
 
     /**
@@ -151,7 +150,7 @@ public class Skill {
                 case "cooldown":
                     return line.replace("%cooldown%", this.coolDown.get(level).toString());
                 case "chance":
-                    return line.replace("%chance%", String.format("%.2f", this.chance.get(level) * 100));
+                    return line.replace("%chance%", String.valueOf(this.chance.get(level)));
             }
         } else {
             return line;
@@ -176,7 +175,7 @@ public class Skill {
         if (current == max) {
             if (level != 4) {
                 level += 1;
-                newMaxExp = skill.update.get(level);
+                newMaxExp = skill.exp.get(level);
             } else {
                 newMaxExp = 0;
             }

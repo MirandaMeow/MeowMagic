@@ -16,8 +16,8 @@ public class CoolDown {
     /**
      * 冷却技能定时器
      *
-     * @param skillCoolDown
-     * @param player
+     * @param skillCoolDown 技能和冷却时间 Hashmap
+     * @param player        玩家
      */
     public CoolDown(HashMap<String, Integer> skillCoolDown, Player player) {
         this.skillCoolDown = skillCoolDown;
@@ -35,7 +35,7 @@ public class CoolDown {
                 }
 
             }
-        }, 0, 20);
+        }, 0L, 20L);
     }
 
     /**

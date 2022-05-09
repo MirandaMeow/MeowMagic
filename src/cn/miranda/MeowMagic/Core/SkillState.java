@@ -48,7 +48,7 @@ public class SkillState {
     public void addSkill(String skillID) {
         this.skillLevel.put(skillID, 0);
         this.skillCoolDown.put(skillID, 0);
-        players.set(String.format("%s.skills.%s.maxExp", player.getName(), skillID), Skill.getInstance(skillID).update.get(0));
+        players.set(String.format("%s.skills.%s.maxExp", player.getName(), skillID), Skill.getInstance(skillID).exp.get(0));
         players.set(String.format("%s.skills.%s.currentExp", player.getName(), skillID), 0);
         players.set(String.format("%s.skills.%s.level", player.getName(), skillID), 0);
         this.save();
@@ -78,7 +78,7 @@ public class SkillState {
             return;
         }
         try {
-            Skill.getInstance(skillID).fire(this.player, this.skillLevel.get(skillID));
+            Skill.getInstance(skillID).activate(this.player, this.skillLevel.get(skillID));
         } catch (InvocationTargetException | IllegalAccessException ignored) {
         }
         this.skillCoolDown.put(skillID, Skill.getInstance(skillID).coolDown.get(this.skillLevel.get(skillID)));
