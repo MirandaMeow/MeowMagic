@@ -7,14 +7,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CoolDown {
     private final HashMap<String, Integer> skillCoolDown;
 
+    /**
+     * 冷却技能定时器
+     *
+     * @param skillCoolDown
+     * @param player
+     */
     public CoolDown(HashMap<String, Integer> skillCoolDown, Player player) {
         this.skillCoolDown = skillCoolDown;
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
@@ -34,6 +38,9 @@ public class CoolDown {
         }, 0, 20);
     }
 
+    /**
+     * 清除所有冷却时间
+     */
     public void clear() {
         skillCoolDown.replaceAll((k, v) -> 0);
     }

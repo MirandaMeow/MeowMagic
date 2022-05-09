@@ -3,6 +3,7 @@ skill01:
   name: "治疗术"
   description:
     - "§e在一定时间内恢复生命值"
+    - ""
     - "§e恢复生命值 §b%power%"
     - "§e持续时间 §b%duration%"
     - "§e消耗魔法 §b%cost%"

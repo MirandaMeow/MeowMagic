@@ -1,6 +1,5 @@
 package cn.miranda.MeowMagic.Core;
 
-import cn.miranda.MeowMagic.SkillLib.Skills;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -72,7 +71,7 @@ public class Skill {
         String skillInternalID = skill.getString("skill");
         assert skillInternalID != null;
         try {
-            this.skill = Skills.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class);
+            this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

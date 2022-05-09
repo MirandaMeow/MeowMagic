@@ -15,14 +15,14 @@ public class AutoRegainMana {
     private BukkitTask task;
 
     /**
-     * 初始化自动恢复时钟
+     * 初始化自动恢复定时器
      */
     private AutoRegainMana() {
         this.on = false;
     }
 
     /**
-     * 启用自动恢复时钟
+     * 启用自动恢复定时器
      */
     public void setOn() {
         if (this.on) {
@@ -38,7 +38,7 @@ public class AutoRegainMana {
     }
 
     /**
-     * 禁用自动恢复时钟
+     * 禁用自动恢复定时器
      */
     public void setOff() {
         if (!this.on) {
@@ -50,7 +50,7 @@ public class AutoRegainMana {
 
 
     /**
-     * @return 获取时钟实例
+     * @return 获取定时器实例
      */
     public static AutoRegainMana getInstance() {
         if (instance == null) {
