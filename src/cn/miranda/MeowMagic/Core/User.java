@@ -65,8 +65,8 @@ public class User {
      * 保存玩家数据
      */
     private void save() {
-        players.set(String.format("%s.maxMana", this.playerName), 100);
-        players.set(String.format("%s.gainMana", this.playerName), 1);
+        players.set(String.format("%s.maxMana", this.playerName), this.maxMana);
+        players.set(String.format("%s.gainMana", this.playerName), this.gainMana);
         players.set(String.format("%s.skills", this.playerName), this.skillState.skillList);
         ConfigManager.saveConfig(players);
     }
@@ -78,18 +78,16 @@ public class User {
         if (players.getString(this.playerName) == null) {
             this.maxMana = 100;
             this.gainMana = 1;
-            players.set(String.format("%s.maxMana", this.playerName), 100);
-            players.set(String.format("%s.gainMana", this.playerName), 1);
-            players.set(String.format("%s.skills", this.playerName), new HashMap<>());
+            players.set(String.format("%s.maxMana", this.playerName), this.maxMana);
+            players.set(String.format("%s.gainMana", this.playerName), this.gainMana);
             this.skillState = new SkillState(player);
             this.save();
             return;
         }
-        int maxMana = players.getInt(String.format("%s.maxMana", this.playerName));
-        int gainMana = players.getInt(String.format("%s.gainMana", this.playerName));
-        this.maxMana = maxMana;
-        this.gainMana = gainMana;
+        this.maxMana = players.getInt(String.format("%s.maxMana", this.playerName));
+        this.gainMana = players.getInt(String.format("%s.gainMana", this.playerName));
         this.skillState = new SkillState(player);
+        this.skillState.addSkill("skill01");
     }
 
     public static User getUser(Player player) {

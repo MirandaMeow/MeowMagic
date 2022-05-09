@@ -14,21 +14,25 @@ import static cn.miranda.MeowMagic.Manager.ConfigManager.players;
 public class SkillState {
     private final Player player;
     public HashMap<String, Integer> skillList = new HashMap<>();
-    private final ConfigurationSection playerConfig;
     private final HashMap<String, Integer> skillCoolDown = new HashMap<>();
     private final CoolDown coolDownTimer;
 
     public SkillState(Player player) {
         this.player = player;
-        this.playerConfig = players.getConfigurationSection(player.getName());
-        assert playerConfig != null;
-        for (String skillID : playerConfig.getValues(false).keySet()) {
-            skillList.put(skillID, playerConfig.getInt(String.format("skills.%s", skillID)));
+        ConfigurationSection skillConfig = players.getConfigurationSection(String.format("%s.skills", this.player.getName()));
+        try {
+            assert skillConfig != null;
+            for (String skillID : skillConfig.getValues(false).keySet()) {
+                this.skillList.put(skillID, skillConfig.getInt(skillID));
+            }
+        } catch (NullPointerException e) {
+            players.set(String.format("%s.skills", this.player.getName()), this.skillList);
+            this.save();
         }
-        for (Map.Entry<String, Integer> entry : skillList.entrySet()) {
-            skillCoolDown.put(entry.getKey(), 0);
+        for (Map.Entry<String, Integer> entry : this.skillList.entrySet()) {
+            this.skillCoolDown.put(entry.getKey(), 0);
         }
-        this.coolDownTimer = new CoolDown(skillCoolDown);
+        this.coolDownTimer = new CoolDown(this.skillCoolDown);
     }
 
     public void addSkill(String skillID) {
@@ -38,7 +42,7 @@ public class SkillState {
     }
 
     private void save() {
-        this.playerConfig.set("skills", this.skillList);
+        players.set(String.format("%s.skills", this.player.getName()), this.skillList);
         ConfigManager.saveConfig(players);
     }
 
@@ -54,9 +58,14 @@ public class SkillState {
             Skill.getInstance(skillID).fire(this.player, this.skillList.get(skillID));
         } catch (InvocationTargetException | IllegalAccessException ignored) {
         }
+        this.skillCoolDown.put(skillID, Skill.getInstance(skillID).coolDown.get(this.skillList.get(skillID)));
     }
 
     public boolean hasSkill(String skillID) {
         return this.skillList.containsKey(skillID);
+    }
+
+    public int checkCoolDown(String skillID) {
+        return this.skillCoolDown.get(skillID);
     }
 }

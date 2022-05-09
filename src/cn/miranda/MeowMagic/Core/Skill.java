@@ -22,7 +22,7 @@ public class Skill {
     public List<String> description;
     public List<Integer> duration;
     public final List<Integer> cost;
-    private final List<Integer> coolDown;
+    public final List<Integer> coolDown;
     private final List<Integer> distance;
     private final boolean isRange;
     private final List<Float> chance;
@@ -106,7 +106,7 @@ public class Skill {
         if (matcher.find()) {
             switch (matcher.group(1)) {
                 case "power":
-                    return line.replace("%power%", this.power.get(level).toString());
+                    return line.replace("%power%", String.valueOf(this.power.get(level)));
                 case "duration":
                     return line.replace("%duration%", this.duration.get(level).toString());
                 case "cost":
