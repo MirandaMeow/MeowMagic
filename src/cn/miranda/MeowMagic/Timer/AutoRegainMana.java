@@ -22,7 +22,7 @@ public class AutoRegainMana {
     }
 
     /**
-     * 启用时钟
+     * 启用自动恢复时钟
      */
     public void setOn() {
         if (this.on) {
@@ -30,9 +30,6 @@ public class AutoRegainMana {
         }
         this.on = true;
         task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
-            if (MeowMagic.users.isEmpty()) {
-                return;
-            }
             for (Map.Entry<Player, User> entry : MeowMagic.users.entrySet()) {
                 User user = entry.getValue();
                 user.gainMana();
@@ -41,7 +38,7 @@ public class AutoRegainMana {
     }
 
     /**
-     * 禁用时钟
+     * 禁用自动恢复时钟
      */
     public void setOff() {
         if (!this.on) {

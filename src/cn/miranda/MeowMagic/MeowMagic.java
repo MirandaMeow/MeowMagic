@@ -1,5 +1,6 @@
 package cn.miranda.MeowMagic;
 
+import cn.miranda.MeowMagic.Core.Skill;
 import cn.miranda.MeowMagic.Core.User;
 import cn.miranda.MeowMagic.Manager.ConfigManager;
 import cn.miranda.MeowMagic.Manager.ListenerManager;
@@ -33,6 +34,7 @@ public class MeowMagic extends JavaPlugin {
         regain = AutoRegainMana.getInstance();
         regain.setOn();
         ConfigManager.loadConfigs();
+        Skill.loadAllSkills();
     }
 
     /**

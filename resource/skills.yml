@@ -1,0 +1,21 @@
+skill01:
+  id: skill01
+  name: 治疗术
+  description:
+    - 在一定时间内恢复生命值
+    - 恢复生命值 %power%
+    - 持续时间 %duration%
+    - 消耗魔法 %cost%
+    - 冷却时间 %cooldown%
+  duration: [ 12, 14, 16, 18, 20 ]
+  cost: [ 35, 35, 35, 35, 35 ]
+  cooldown: [ 20, 20, 20, 20, 20 ]
+  distance: [ 0, 0, 0, 0, 0 ]
+  isRange: false
+  chance: [ 1.0, 1.0, 1.0, 1.0, 1.0 ]
+  skill: heal
+  item: [ air ]
+  click: right
+  sneak: true
+  update: [ 20, 30, 40, 50, 0 ]
+  power: [ 0.4, 0.6, 0.8, 1.0, 1.2 ]

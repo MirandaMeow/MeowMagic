@@ -1,15 +1,19 @@
 package cn.miranda.MeowMagic.Core;
 
 import cn.miranda.MeowMagic.Manager.ConfigManager;
+import cn.miranda.MeowMagic.MeowMagic;
 import org.bukkit.entity.Player;
 
-import static cn.miranda.MeowMagic.Manager.ConfigManager.playerRegain;
+import java.util.HashMap;
+
+import static cn.miranda.MeowMagic.Manager.ConfigManager.players;
 
 public class User {
     private final Player player;
     private int maxMana;
     private int gainMana;
     private final String playerName;
+    public SkillState skillState;
 
     /**
      * 初始化玩家
@@ -27,9 +31,12 @@ public class User {
      */
     public void gainMana() {
         int mana = this.player.getLevel();
-        if (mana != this.maxMana) {
+        if (mana < this.maxMana) {
             this.player.setLevel(mana + this.gainMana);
             this.player.setExp((float) this.player.getLevel() / this.maxMana);
+        } else {
+            this.player.setLevel(this.maxMana);
+            this.player.setExp(1);
         }
     }
 
@@ -58,26 +65,34 @@ public class User {
      * 保存玩家数据
      */
     private void save() {
-        playerRegain.set(String.format("%s.maxMana", this.playerName), 100);
-        playerRegain.set(String.format("%s.gainMana", this.playerName), 1);
-        ConfigManager.saveConfig(playerRegain);
+        players.set(String.format("%s.maxMana", this.playerName), 100);
+        players.set(String.format("%s.gainMana", this.playerName), 1);
+        players.set(String.format("%s.skills", this.playerName), this.skillState.skillList);
+        ConfigManager.saveConfig(players);
     }
 
     /**
      * 载入玩家数据
      */
     private void load() {
-        if (playerRegain.getString(this.playerName) == null) {
+        if (players.getString(this.playerName) == null) {
             this.maxMana = 100;
             this.gainMana = 1;
-            playerRegain.set(String.format("%s.maxMana", this.playerName), 100);
-            playerRegain.set(String.format("%s.gainMana", this.playerName), 1);
+            players.set(String.format("%s.maxMana", this.playerName), 100);
+            players.set(String.format("%s.gainMana", this.playerName), 1);
+            players.set(String.format("%s.skills", this.playerName), new HashMap<>());
+            this.skillState = new SkillState(player);
             this.save();
             return;
         }
-        int maxMana = playerRegain.getInt(String.format("%s.maxMana", this.playerName));
-        int gainMana = playerRegain.getInt(String.format("%s.gainMana", this.playerName));
+        int maxMana = players.getInt(String.format("%s.maxMana", this.playerName));
+        int gainMana = players.getInt(String.format("%s.gainMana", this.playerName));
         this.maxMana = maxMana;
         this.gainMana = gainMana;
+        this.skillState = new SkillState(player);
+    }
+
+    public static User getUser(Player player) {
+        return MeowMagic.users.get(player);
     }
 }

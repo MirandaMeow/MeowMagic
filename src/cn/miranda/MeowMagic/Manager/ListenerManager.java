@@ -2,6 +2,7 @@ package cn.miranda.MeowMagic.Manager;
 
 import cn.miranda.MeowMagic.Events.BanDropExpEvent;
 import cn.miranda.MeowMagic.Events.PlayerLoginLogoutEvent;
+import cn.miranda.MeowMagic.Events.PlayerSkillInvokerEvent;
 import cn.miranda.MeowMagic.MeowMagic;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -27,6 +28,7 @@ public class ListenerManager {
     public static void registerAll() {
         list.add(new PlayerLoginLogoutEvent());
         list.add(new BanDropExpEvent());
+        list.add(new PlayerSkillInvokerEvent());
         for (Listener listener : list) {
             register(listener);
         }

@@ -19,10 +19,7 @@ public class PlayerLoginLogoutEvent implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     private void PlayerLogin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        MessageManager.Message(player, "登录");
-        if (!MeowMagic.users.containsKey(player)) {
-            MeowMagic.users.put(player, new User(player));
-        }
+        MeowMagic.users.put(player, new User(player));
     }
 
     /**
@@ -33,7 +30,6 @@ public class PlayerLoginLogoutEvent implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     private void PlayerLogout(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        MessageManager.Message(player, "登出");
         MeowMagic.users.remove(player);
     }
 }

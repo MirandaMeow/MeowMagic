@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ConfigManager {
-    public static YamlConfiguration playerRegain;
+    public static YamlConfiguration players;
+    public static YamlConfiguration skills;
     private static final HashMap<YamlConfiguration, File> configs = new HashMap<>();
 
     /**
@@ -32,7 +33,8 @@ public class ConfigManager {
      * 载入所有配置文件
      */
     public static void loadConfigs() {
-        playerRegain = load("players.yml");
+        players = load("players.yml");
+        skills = load("skills.yml");
     }
 
     /**
