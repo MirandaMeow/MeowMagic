@@ -4,8 +4,6 @@ import cn.miranda.MeowMagic.Manager.ConfigManager;
 import cn.miranda.MeowMagic.MeowMagic;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-
 import static cn.miranda.MeowMagic.Manager.ConfigManager.players;
 
 public class User {
@@ -67,7 +65,6 @@ public class User {
     private void save() {
         players.set(String.format("%s.maxMana", this.playerName), this.maxMana);
         players.set(String.format("%s.gainMana", this.playerName), this.gainMana);
-        players.set(String.format("%s.skills", this.playerName), this.skillState.skillList);
         ConfigManager.saveConfig(players);
     }
 
@@ -87,9 +84,14 @@ public class User {
         this.maxMana = players.getInt(String.format("%s.maxMana", this.playerName));
         this.gainMana = players.getInt(String.format("%s.gainMana", this.playerName));
         this.skillState = new SkillState(player);
-        this.skillState.addSkill("skill01");
     }
 
+    /**
+     * 获取 User 实例
+     *
+     * @param player 玩家
+     * @return User 实例
+     */
     public static User getUser(Player player) {
         return MeowMagic.users.get(player);
     }

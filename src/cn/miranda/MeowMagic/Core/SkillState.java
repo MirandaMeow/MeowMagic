@@ -13,58 +13,103 @@ import static cn.miranda.MeowMagic.Manager.ConfigManager.players;
 
 public class SkillState {
     private final Player player;
-    public HashMap<String, Integer> skillList = new HashMap<>();
+    public HashMap<String, Integer> skillLevel = new HashMap<>();
     private final HashMap<String, Integer> skillCoolDown = new HashMap<>();
     private final CoolDown coolDownTimer;
 
+    /**
+     * 初始化玩家技能状态实例
+     *
+     * @param player 玩家
+     */
     public SkillState(Player player) {
         this.player = player;
         ConfigurationSection skillConfig = players.getConfigurationSection(String.format("%s.skills", this.player.getName()));
         try {
             assert skillConfig != null;
             for (String skillID : skillConfig.getValues(false).keySet()) {
-                this.skillList.put(skillID, skillConfig.getInt(skillID));
+                this.skillLevel.put(skillID, skillConfig.getInt(String.format("%s.level", skillID)));
             }
         } catch (NullPointerException e) {
-            players.set(String.format("%s.skills", this.player.getName()), this.skillList);
+            players.set(String.format("%s.skills", this.player.getName()), this.skillLevel);
             this.save();
         }
-        for (Map.Entry<String, Integer> entry : this.skillList.entrySet()) {
+        for (Map.Entry<String, Integer> entry : this.skillLevel.entrySet()) {
             this.skillCoolDown.put(entry.getKey(), 0);
         }
-        this.coolDownTimer = new CoolDown(this.skillCoolDown);
+        this.coolDownTimer = new CoolDown(this.skillCoolDown, this.player);
     }
 
+    /**
+     * 给玩家增加一个技能
+     *
+     * @param skillID 技能 ID
+     */
     public void addSkill(String skillID) {
-        this.skillList.put(skillID, 0);
+        this.skillLevel.put(skillID, 0);
         this.skillCoolDown.put(skillID, 0);
+        players.set(String.format("%s.skills.%s.maxExp", player.getName(), skillID), Skill.getInstance(skillID).update.get(0));
+        players.set(String.format("%s.skills.%s.currentExp", player.getName(), skillID), 0);
+        players.set(String.format("%s.skills.%s.level", player.getName(), skillID), 0);
         this.save();
     }
 
-    private void save() {
-        players.set(String.format("%s.skills", this.player.getName()), this.skillList);
+    /**
+     * 保存技能状态实例
+     */
+    public void save() {
         ConfigManager.saveConfig(players);
     }
 
+    /**
+     * 清除玩家所有技能的冷却时间
+     */
     public void clearCoolDown() {
         this.coolDownTimer.clear();
     }
 
+    /**
+     * 触发技能
+     *
+     * @param skillID 技能 ID
+     */
     public void fireSkill(String skillID) {
-        if (!this.skillList.containsKey(skillID)) {
+        if (!this.skillLevel.containsKey(skillID)) {
             return;
         }
         try {
-            Skill.getInstance(skillID).fire(this.player, this.skillList.get(skillID));
+            Skill.getInstance(skillID).fire(this.player, this.skillLevel.get(skillID));
         } catch (InvocationTargetException | IllegalAccessException ignored) {
         }
-        this.skillCoolDown.put(skillID, Skill.getInstance(skillID).coolDown.get(this.skillList.get(skillID)));
+        this.skillCoolDown.put(skillID, Skill.getInstance(skillID).coolDown.get(this.skillLevel.get(skillID)));
     }
 
+    /**
+     * 技能使用失败时让其进入冷却
+     *
+     * @param skillID 技能 ID
+     */
+    public void failToUse(String skillID) {
+        Skill skill = Skill.getInstance(skillID);
+        this.skillCoolDown.put(skillID, Skill.getInstance(skillID).coolDown.get(this.skillLevel.get(skillID)));
+    }
+
+    /**
+     * 查询玩家是否持有技能
+     *
+     * @param skillID 技能 ID
+     * @return 返回玩家是否持有技能
+     */
     public boolean hasSkill(String skillID) {
-        return this.skillList.containsKey(skillID);
+        return this.skillLevel.containsKey(skillID);
     }
 
+    /**
+     * 检查技能是否处于冷却中
+     *
+     * @param skillID 技能 ID
+     * @return 返回技能是否处于冷却
+     */
     public int checkCoolDown(String skillID) {
         return this.skillCoolDown.get(skillID);
     }

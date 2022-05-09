@@ -15,6 +15,11 @@ import org.bukkit.inventory.EquipmentSlot;
 import java.util.Map;
 
 public class PlayerSkillInvokerEvent implements Listener {
+    /**
+     * 玩家触发技能监听器
+     *
+     * @param event 玩家交互事件
+     */
     @EventHandler(priority = EventPriority.NORMAL)
     private void PlayerSkillInvoker(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -45,21 +50,30 @@ public class PlayerSkillInvokerEvent implements Listener {
         if (!user.skillState.hasSkill(skill.skillID)) {
             return;
         }
-        int level = user.skillState.skillList.get(skill.skillID);
+        int level = user.skillState.skillLevel.get(skill.skillID);
         assert skill.cost != null;
         int cost = skill.cost.get(level);
         if (!user.manaCheck(cost)) {
-            MessageManager.ActionBarMessage(player, String.format("魔法值不足, 需要 %d", cost));
+            MessageManager.ActionBarMessage(player, String.format("§e无法发动§c§l%s§r§e, 需要§b%d点魔法", skillName, cost));
             return;
         }
         int coolDown = user.skillState.checkCoolDown(skill.skillID);
         if (coolDown > 0) {
-            MessageManager.ActionBarMessage(player, String.format("%s 还未冷却, 剩余 %d 秒", skillName, coolDown));
+            MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e还未冷却, 剩余§b%d§e秒", skillName, coolDown));
             return;
         }
+        float random = (float) Math.random();
         user.reduceMana(cost);
+        skill.update(skill.skillID, player, user.skillState);
+        if (random > skill.chance.get(level)) {
+            MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e使用失败！", skillName));
+            user.skillState.failToUse(skill.skillID);
+            event.setCancelled(true);
+            return;
+        }
+        MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e发动！", skillName));
         user.skillState.fireSkill(skill.skillID);
-        MessageManager.HoverMessage(player, skillName, skill.getDescription(level));
+        MessageManager.HoverMessage(player, skillName, skill.getDescription(player));
         event.setCancelled(true);
     }
 }
