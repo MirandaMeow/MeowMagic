@@ -2,15 +2,13 @@ package cn.miranda.MeowMagic.Core;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +32,7 @@ public class Skill {
     public boolean sneak;
     public final List<Integer> exp;
     private final List<Integer> power;
+    public String invoke;
 
     /**
      * 获取技能实例（单例模式）
@@ -71,7 +70,7 @@ public class Skill {
         String skillInternalID = skill.getString("skill");
         assert skillInternalID != null;
         try {
-            this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class, int.class, int.class);
+            this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class, int.class, int.class, List.class);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -90,22 +89,43 @@ public class Skill {
         this.sneak = skill.getBoolean("sneak");
         this.exp = (List<Integer>) skill.getList("exp");
         this.power = (List<Integer>) skill.getList("power");
+        this.invoke = skill.getString("invoke");
     }
 
 
     /**
-     * 触发技能
+     * 交互触发技能
      *
      * @param player 触发技能的玩家
      * @param level  技能等级
-     * @throws InvocationTargetException 报错
-     * @throws IllegalAccessException    报错
      */
-    public void activate(Player player, int level) throws InvocationTargetException, IllegalAccessException {
+    public void interact(Player player, int level) {
         int distance = this.distance.get(level);
         int duration = this.duration.get(level);
         int power = this.power.get(level);
-        this.skill.invoke(null, player, distance, this.isRange, duration, power);
+        try {
+            this.skill.invoke(null, player, distance, this.isRange, duration, power, new ArrayList<>());
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 交互实体触发技能
+     *
+     * @param player 触发技能的玩家
+     * @param entity 被技能影响的实体
+     * @param level  技能等级
+     */
+    public void interactEntity(Player player, Entity entity, int level) {
+        int distance = this.distance.get(level);
+        int duration = this.duration.get(level);
+        int power = this.power.get(level);
+        try {
+            this.skill.invoke(null, player, distance, this.isRange, duration, power, new ArrayList<>(Collections.singletonList(entity)));
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

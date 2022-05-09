@@ -32,7 +32,7 @@ public class AutoRegainMana {
         task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
             for (Map.Entry<Player, User> entry : MeowMagic.users.entrySet()) {
                 User user = entry.getValue();
-                user.gainMana();
+                user.reGainMana(-1);
             }
         }, 0L, 20L);
     }

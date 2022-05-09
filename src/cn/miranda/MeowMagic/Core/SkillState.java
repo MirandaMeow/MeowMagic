@@ -3,9 +3,9 @@ package cn.miranda.MeowMagic.Core;
 import cn.miranda.MeowMagic.Manager.ConfigManager;
 import cn.miranda.MeowMagic.Timer.CoolDown;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,14 +73,18 @@ public class SkillState {
      *
      * @param skillID 技能 ID
      */
-    public void fireSkill(String skillID) {
+    public void fireSkill(String skillID, String invoke, Entity entity) {
         if (!this.skillLevel.containsKey(skillID)) {
             return;
         }
-        try {
-            Skill.getInstance(skillID).activate(this.player, this.skillLevel.get(skillID));
-        } catch (InvocationTargetException | IllegalAccessException ignored) {
+        switch (invoke) {
+            case "interact":
+                Skill.getInstance(skillID).interact(this.player, this.skillLevel.get(skillID));
+                return;
+            case "interactEntity":
+                Skill.getInstance(skillID).interactEntity(this.player, entity, this.skillLevel.get(skillID));
         }
+
         this.skillCoolDown.put(skillID, Skill.getInstance(skillID).coolDown.get(this.skillLevel.get(skillID)));
     }
 
@@ -90,7 +94,6 @@ public class SkillState {
      * @param skillID 技能 ID
      */
     public void failToUse(String skillID) {
-        Skill skill = Skill.getInstance(skillID);
         this.skillCoolDown.put(skillID, Skill.getInstance(skillID).coolDown.get(this.skillLevel.get(skillID)));
     }
 

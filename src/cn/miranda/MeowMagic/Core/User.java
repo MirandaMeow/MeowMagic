@@ -27,10 +27,14 @@ public class User {
     /**
      * 使玩家每秒恢复一定的魔法
      */
-    public void gainMana() {
+    public void reGainMana(int addMana) {
         int mana = this.player.getLevel();
         if (mana < this.maxMana) {
-            this.player.setLevel(mana + this.reGainMana);
+            if (addMana == -1) {
+                this.player.setLevel(mana + this.reGainMana);
+            } else {
+                this.player.setLevel(mana + addMana);
+            }
             this.player.setExp((float) this.player.getLevel() / this.maxMana);
         } else {
             this.player.setLevel(this.maxMana);
@@ -133,6 +137,7 @@ public class User {
      */
     public void setMaxMana(int maxMana) {
         this.maxMana = maxMana;
+        this.player.setExp((float) this.player.getLevel() / this.maxMana);
         this.save();
     }
 
