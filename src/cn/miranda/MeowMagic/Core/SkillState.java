@@ -1,7 +1,6 @@
 package cn.miranda.MeowMagic.Core;
 
 import cn.miranda.MeowMagic.Manager.ConfigManager;
-import cn.miranda.MeowMagic.Manager.MessageManager;
 import cn.miranda.MeowMagic.Timer.CoolDown;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;

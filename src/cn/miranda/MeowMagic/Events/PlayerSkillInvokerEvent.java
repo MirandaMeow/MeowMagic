@@ -6,7 +6,6 @@ import cn.miranda.MeowMagic.Manager.MessageManager;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,10 +14,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -79,13 +76,13 @@ public class PlayerSkillInvokerEvent implements Listener {
         }
         if (skill.offhand != null) {
             if (skill.offhand != offHand) {
-                MessageManager.ActionBarMessage(player, String.format("§b发动§c§l%s§r§e副手需要§b%s x %d", skillName, skill.offhand, skill.offhandCost));
+                MessageManager.ActionBarMessage(player, String.format("§e发动§c§l%s§r§e副手需要§b%s*%d", skillName, skill.offHandItemName, skill.offhandCost));
                 event.setCancelled(true);
                 return;
             } else {
                 boolean result = deleteOffHandItemStack(player, skill.offhand, skill.offhandCost);
                 if (!result) {
-                    MessageManager.ActionBarMessage(player, String.format("§b发动§c§l%s§r§e副手需要§b%s x %d", skillName, skill.offhand, skill.offhandCost));
+                    MessageManager.ActionBarMessage(player, String.format("§e发动§c§l%s§r§e副手需要§b%s*%d", skillName, skill.offHandItemName, skill.offhandCost));
                     event.setCancelled(true);
                     return;
                 }
@@ -160,13 +157,13 @@ public class PlayerSkillInvokerEvent implements Listener {
         }
         if (skill.offhand != null) {
             if (skill.offhand != offHand) {
-                MessageManager.ActionBarMessage(player, String.format("§b发动§c§l%s§r§e副手需要§b%s x %d", skillName, skill.offhand, skill.offhandCost));
+                MessageManager.ActionBarMessage(player, String.format("§e发动§c§l%s§r§e副手需要§b%s*%d", skillName, skill.offHandItemName, skill.offhandCost));
                 event.setCancelled(true);
                 return;
             } else {
                 boolean result = deleteOffHandItemStack(player, skill.offhand, skill.offhandCost);
                 if (!result) {
-                    MessageManager.ActionBarMessage(player, String.format("§b发动§c§l%s§r§e副手需要§b%s x %d", skillName, skill.offhand, skill.offhandCost));
+                    MessageManager.ActionBarMessage(player, String.format("§e发动§c§l%s§r§e副手需要§b%s*%d", skillName, skill.offHandItemName, skill.offhandCost));
                     event.setCancelled(true);
                     return;
                 }
@@ -189,10 +186,6 @@ public class PlayerSkillInvokerEvent implements Listener {
         event.setCancelled(true);
     }
 
-    private String translate(String object) {
-        TranslatableComponent translatableComponent = new TranslatableComponent(object);
-        return translatableComponent.getTranslate();
-    }
 
     /**
      * 检查副手物品是否符合要求，如果符合则扣除

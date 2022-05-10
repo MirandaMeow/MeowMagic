@@ -34,6 +34,7 @@ public class Skill {
     private final List<Integer> power;
     public String invoke;
     public Material offhand;
+    public String offHandItemName;
     public int offhandCost;
 
     /**
@@ -93,6 +94,7 @@ public class Skill {
         this.power = (List<Integer>) skill.getList("power");
         this.invoke = skill.getString("invoke");
         this.offhand = Material.getMaterial(skill.getString("offhand"), false);
+        this.offHandItemName = skill.getString("offHandItemName");
         this.offhandCost = skill.getInt("offhandCost");
     }
 
