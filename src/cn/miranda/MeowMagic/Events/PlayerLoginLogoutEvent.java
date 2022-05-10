@@ -21,14 +21,14 @@ public class PlayerLoginLogoutEvent implements Listener {
         MeowMagic.users.put(player, new User(player));
     }
 
-    /**
-     * 当玩家登出时从处理列表钟去除该玩家
-     *
-     * @param event 玩家登出事件
-     */
-    @EventHandler(priority = EventPriority.NORMAL)
-    private void PlayerLogout(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        MeowMagic.users.remove(player);
-    }
+//    /**
+//     * 当玩家登出时从处理列表钟去除该玩家
+//     *
+//     * @param event 玩家登出事件
+//     */
+//    @EventHandler(priority = EventPriority.NORMAL)
+//    private void PlayerLogout(PlayerQuitEvent event) {
+//        Player player = event.getPlayer();
+//        MeowMagic.users.remove(player);
+//    }
 }

@@ -1,6 +1,7 @@
 package cn.miranda.MeowMagic.Core;
 
 import cn.miranda.MeowMagic.Manager.ConfigManager;
+import cn.miranda.MeowMagic.Manager.MessageManager;
 import cn.miranda.MeowMagic.Timer.CoolDown;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -35,7 +36,7 @@ public class SkillState {
             this.save();
         }
         for (Map.Entry<String, Integer> entry : this.skillLevel.entrySet()) {
-            this.skillCoolDown.put(entry.getKey(), 0);
+            this.skillCoolDown.put(entry.getKey(), -1);
         }
         this.coolDownTimer = new CoolDown(this.skillCoolDown, this.player);
     }
@@ -73,19 +74,19 @@ public class SkillState {
      *
      * @param skillID 技能 ID
      */
-    public void fireSkill(String skillID, String invoke, Entity entity) {
-        if (!this.skillLevel.containsKey(skillID)) {
-            return;
-        }
+    public void doSkill(String skillID, String invoke, Entity entity) {
+        boolean result = false;
         switch (invoke) {
             case "interact":
-                Skill.getInstance(skillID).interact(this.player, this.skillLevel.get(skillID));
-                return;
+                result = Skill.getInstance(skillID).interact(this.player, this.skillLevel.get(skillID));
+                break;
             case "interactEntity":
-                Skill.getInstance(skillID).interactEntity(this.player, entity, this.skillLevel.get(skillID));
+                result = Skill.getInstance(skillID).interactEntity(this.player, entity, this.skillLevel.get(skillID));
+                break;
         }
-
-        this.skillCoolDown.put(skillID, Skill.getInstance(skillID).coolDown.get(this.skillLevel.get(skillID)));
+        if (result) {
+            this.doCoolDown(skillID);
+        }
     }
 
     /**
@@ -93,7 +94,7 @@ public class SkillState {
      *
      * @param skillID 技能 ID
      */
-    public void failToUse(String skillID) {
+    public void doCoolDown(String skillID) {
         this.skillCoolDown.put(skillID, Skill.getInstance(skillID).coolDown.get(this.skillLevel.get(skillID)));
     }
 

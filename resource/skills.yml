@@ -17,6 +17,8 @@ skill01:
   chance: [ 60, 70, 80, 90, 100 ]
   skill: "heal"
   item: [ STICK ]
+  offhand: ""
+  offhandCost: 0
   click: "right"
   sneak: true
   invoke: "interact"
@@ -40,6 +42,8 @@ skill02:
   chance: [ 70, 70, 70, 70, 70 ]
   skill: "stun"
   item: [ BRICK ]
+  offhand: DIAMOND
+  offhandCost: 5
   click: "right"
   sneak: true
   invoke: "interactEntity"

@@ -3,8 +3,10 @@ package cn.miranda.MeowMagic.Events;
 import cn.miranda.MeowMagic.Core.Skill;
 import cn.miranda.MeowMagic.Core.User;
 import cn.miranda.MeowMagic.Manager.MessageManager;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,7 +15,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -28,20 +33,21 @@ public class PlayerSkillInvokerEvent implements Listener {
     private void PlayerSkillInvoker_Interact(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         User user = User.getUser(player);
-        Material userHand = player.getInventory().getItemInMainHand().getType();
+        Material mainHand = player.getInventory().getItemInMainHand().getType();
+        Material offHand = player.getInventory().getItemInOffHand().getType();
         boolean sneak = player.isSneaking();
         Action action = event.getAction();
         Skill skill = null;
         for (Map.Entry<String, Skill> entry : Skill.skillMap.entrySet()) {
-            if (entry.getValue().itemList.contains(userHand)) {
+            if (entry.getValue().mainHand.contains(mainHand)) {
                 skill = entry.getValue();
                 break;
             }
         }
-        if (event.getHand() != EquipmentSlot.HAND) {
+        if (skill == null) {
             return;
         }
-        if (skill == null) {
+        if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
         String skillName = skill.skillName;
@@ -71,6 +77,20 @@ public class PlayerSkillInvokerEvent implements Listener {
             event.setCancelled(true);
             return;
         }
+        if (skill.offhand != null) {
+            if (skill.offhand != offHand) {
+                MessageManager.ActionBarMessage(player, String.format("§b发动§c§l%s§r§e副手需要§b%s x %d", skillName, skill.offhand, skill.offhandCost));
+                event.setCancelled(true);
+                return;
+            } else {
+                boolean result = deleteOffHandItemStack(player, skill.offhand, skill.offhandCost);
+                if (!result) {
+                    MessageManager.ActionBarMessage(player, String.format("§b发动§c§l%s§r§e副手需要§b%s x %d", skillName, skill.offhand, skill.offhandCost));
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
         Random random = new Random();
         int random_int = random.nextInt(100);
         user.reduceMana(cost);
@@ -79,12 +99,12 @@ public class PlayerSkillInvokerEvent implements Listener {
         int chance = skill.chance.get(level);
         if (random_int > chance) {
             MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e使用失败", skillName));
-            user.skillState.failToUse(skill.skillID);
+            user.skillState.doCoolDown(skill.skillID);
             event.setCancelled(true);
             return;
         }
         MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e发动", skillName));
-        user.skillState.fireSkill(skill.skillID, "interact", null);
+        user.skillState.doSkill(skill.skillID, "interact", null);
         event.setCancelled(true);
     }
 
@@ -98,19 +118,20 @@ public class PlayerSkillInvokerEvent implements Listener {
         Player player = event.getPlayer();
         User user = User.getUser(player);
         Entity target = event.getRightClicked();
-        Material userHand = player.getInventory().getItemInMainHand().getType();
+        Material mainHand = player.getInventory().getItemInMainHand().getType();
+        Material offHand = player.getInventory().getItemInOffHand().getType();
         boolean sneak = player.isSneaking();
         Skill skill = null;
         for (Map.Entry<String, Skill> entry : Skill.skillMap.entrySet()) {
-            if (entry.getValue().itemList.contains(userHand)) {
+            if (entry.getValue().mainHand.contains(mainHand)) {
                 skill = entry.getValue();
                 break;
             }
         }
-        if (event.getHand() != EquipmentSlot.HAND) {
+        if (skill == null) {
             return;
         }
-        if (skill == null) {
+        if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
         String skillName = skill.skillName;
@@ -137,6 +158,20 @@ public class PlayerSkillInvokerEvent implements Listener {
             event.setCancelled(true);
             return;
         }
+        if (skill.offhand != null) {
+            if (skill.offhand != offHand) {
+                MessageManager.ActionBarMessage(player, String.format("§b发动§c§l%s§r§e副手需要§b%s x %d", skillName, skill.offhand, skill.offhandCost));
+                event.setCancelled(true);
+                return;
+            } else {
+                boolean result = deleteOffHandItemStack(player, skill.offhand, skill.offhandCost);
+                if (!result) {
+                    MessageManager.ActionBarMessage(player, String.format("§b发动§c§l%s§r§e副手需要§b%s x %d", skillName, skill.offhand, skill.offhandCost));
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
         Random random = new Random();
         int random_int = random.nextInt(100);
         user.reduceMana(cost);
@@ -145,12 +180,37 @@ public class PlayerSkillInvokerEvent implements Listener {
         int chance = skill.chance.get(level);
         if (random_int > chance) {
             MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e使用失败", skillName));
-            user.skillState.failToUse(skill.skillID);
+            user.skillState.doCoolDown(skill.skillID);
             event.setCancelled(true);
             return;
         }
         MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e发动", skillName));
-        user.skillState.fireSkill(skill.skillID, "interactEntity", target);
+        user.skillState.doSkill(skill.skillID, "interactEntity", target);
         event.setCancelled(true);
+    }
+
+    private String translate(String object) {
+        TranslatableComponent translatableComponent = new TranslatableComponent(object);
+        return translatableComponent.getTranslate();
+    }
+
+    /**
+     * 检查副手物品是否符合要求，如果符合则扣除
+     *
+     * @param player   玩家
+     * @param material 物品材质
+     * @param count    扣除数量
+     * @return 是否扣除成功
+     */
+    private boolean deleteOffHandItemStack(Player player, Material material, int count) {
+        ItemStack offHandItemStack = player.getInventory().getItemInOffHand();
+        if (offHandItemStack.getType() != material) {
+            return false;
+        }
+        if (offHandItemStack.getAmount() < count) {
+            return false;
+        }
+        offHandItemStack.setAmount(offHandItemStack.getAmount() - count);
+        return true;
     }
 }

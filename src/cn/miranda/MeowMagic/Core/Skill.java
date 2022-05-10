@@ -27,12 +27,14 @@ public class Skill {
     private final boolean isRange;
     public final List<Integer> chance;
     private Method skill;
-    public List<Material> itemList = new ArrayList<>();
+    public List<Material> mainHand = new ArrayList<>();
     public final List<Action> click = new ArrayList<>();
     public boolean sneak;
     public final List<Integer> exp;
     private final List<Integer> power;
     public String invoke;
+    public Material offhand;
+    public int offhandCost;
 
     /**
      * 获取技能实例（单例模式）
@@ -76,7 +78,7 @@ public class Skill {
         }
         List<String> items = skill.getStringList("item");
         for (String item : items) {
-            itemList.add(Material.getMaterial(item));
+            mainHand.add(Material.getMaterial(item, false));
         }
         String clickString = skill.getString("click");
         if (Objects.equals(clickString, "right")) {
@@ -90,6 +92,8 @@ public class Skill {
         this.exp = (List<Integer>) skill.getList("exp");
         this.power = (List<Integer>) skill.getList("power");
         this.invoke = skill.getString("invoke");
+        this.offhand = Material.getMaterial(skill.getString("offhand"), false);
+        this.offhandCost = skill.getInt("offhandCost");
     }
 
 
@@ -99,14 +103,15 @@ public class Skill {
      * @param player 触发技能的玩家
      * @param level  技能等级
      */
-    public void interact(Player player, int level) {
+    public boolean interact(Player player, int level) {
         int distance = this.distance.get(level);
         int duration = this.duration.get(level);
         int power = this.power.get(level);
         try {
-            this.skill.invoke(null, player, distance, this.isRange, duration, power, new ArrayList<>());
+            return (boolean) this.skill.invoke(null, player, distance, this.isRange, duration, power, new ArrayList<>());
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -117,14 +122,15 @@ public class Skill {
      * @param entity 被技能影响的实体
      * @param level  技能等级
      */
-    public void interactEntity(Player player, Entity entity, int level) {
+    public boolean interactEntity(Player player, Entity entity, int level) {
         int distance = this.distance.get(level);
         int duration = this.duration.get(level);
         int power = this.power.get(level);
         try {
-            this.skill.invoke(null, player, distance, this.isRange, duration, power, new ArrayList<>(Collections.singletonList(entity)));
+            return (boolean) this.skill.invoke(null, player, distance, this.isRange, duration, power, new ArrayList<>(Collections.singletonList(entity)));
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -216,6 +222,9 @@ public class Skill {
      * 在插件启用时初始化所有技能
      */
     public static void loadAllSkills() {
-        Skill.getInstance("skill01");
+        Set<String> skills_list = skills.getValues(false).keySet();
+        for (String skill : skills_list) {
+            Skill.getInstance(skill);
+        }
     }
 }

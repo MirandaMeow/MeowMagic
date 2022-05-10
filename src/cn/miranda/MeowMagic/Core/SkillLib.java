@@ -2,6 +2,7 @@ package cn.miranda.MeowMagic.Core;
 
 import cn.miranda.MeowMagic.Timer.Skill.HealTicker;
 import cn.miranda.MeowMagic.Timer.Skill.StunTicker;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -18,9 +19,9 @@ public class SkillLib {
      * @param power    治疗量
      * @param entities /
      */
-    public static void heal(Player player, int distance, boolean isRange, int duration, int power, List<Entity> entities) {
+    public static boolean heal(Player player, int distance, boolean isRange, int duration, int power, List<Entity> entities) {
         new HealTicker(player, duration, power);
-        User.getUser(player).setMaxMana(300);
+        return true;
     }
 
     /**
@@ -33,7 +34,8 @@ public class SkillLib {
      * @param power    /
      * @param entities 被击晕的生物
      */
-    public static void stun(Player player, int distance, boolean isRange, int duration, int power, List<Entity> entities) {
+    public static boolean stun(Player player, int distance, boolean isRange, int duration, int power, List<Entity> entities) {
         new StunTicker(duration, entities);
+        return true;
     }
 }
