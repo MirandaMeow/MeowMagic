@@ -25,6 +25,7 @@ skill01:
   invoke: "interact"
   exp: [ 30, 40, 50, 60, 0 ]
   power: [ 5, 5, 10, 15, 20 ]
+  isPositive: true
 skill02:
   id: "skill02"
   name: "击晕"
@@ -51,3 +52,4 @@ skill02:
   invoke: "interactEntity"
   exp: [ 30, 40, 50, 60, 0 ]
   power: [ 0, 0, 0, 0, 0 ]
+  isPositive: true

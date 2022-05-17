@@ -10,7 +10,7 @@ public class HealTicker {
     private int duration;
 
     /**
-     * 恢复术效果定时器
+     * 治疗术效果定时器
      *
      * @param player   玩家
      * @param duration 持续时间
