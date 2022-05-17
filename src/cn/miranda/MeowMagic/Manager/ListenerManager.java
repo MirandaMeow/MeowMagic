@@ -1,8 +1,8 @@
 package cn.miranda.MeowMagic.Manager;
 
-import cn.miranda.MeowMagic.Events.BanDropExpEvent;
-import cn.miranda.MeowMagic.Events.PlayerLoginLogoutEvent;
-import cn.miranda.MeowMagic.Events.PlayerSkillInvokerEvent;
+import cn.miranda.MeowMagic.Event.BanDropExpEvent;
+import cn.miranda.MeowMagic.Event.PlayerLoginLogoutEvent;
+import cn.miranda.MeowMagic.Event.PlayerSkillInvokerEvent;
 import cn.miranda.MeowMagic.MeowMagic;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;

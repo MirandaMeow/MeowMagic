@@ -1,4 +1,4 @@
-package cn.miranda.MeowMagic.Events;
+package cn.miranda.MeowMagic.Event;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

@@ -36,6 +36,7 @@ public class Skill {
     public Material offhand;
     public String offHandItemName;
     public int offhandCost;
+    public boolean isPositive;
 
     /**
      * 获取技能实例（单例模式）
@@ -96,6 +97,7 @@ public class Skill {
         this.offhand = Material.getMaterial(skill.getString("offhand"), false);
         this.offHandItemName = skill.getString("offHandItemName");
         this.offhandCost = skill.getInt("offhandCost");
+        this.isPositive = skill.getBoolean("isPositive");
     }
 
 

@@ -1,4 +1,4 @@
-package cn.miranda.MeowMagic.Events;
+package cn.miranda.MeowMagic.Event;
 
 import cn.miranda.MeowMagic.Core.User;
 import cn.miranda.MeowMagic.MeowMagic;
