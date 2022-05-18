@@ -81,7 +81,7 @@ public class PlayerSkillInvokerEvent implements Listener {
                     event.setCancelled(true);
                     return;
                 } else {
-                    boolean result = deleteOffHandItemStack(player, skill.offhand, skill.offhandCost);
+                    boolean result = handleOffHandItemStack(player, skill.offhand, skill.offhandCost, false);
                     if (!result) {
                         MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                         event.setCancelled(true);
@@ -91,7 +91,6 @@ public class PlayerSkillInvokerEvent implements Listener {
             }
             Random random = new Random();
             int random_int = random.nextInt(100);
-            user.reduceMana(cost);
             skill.update(skill.skillID, player, user.skillState);
             assert skill.chance != null;
             int chance = skill.chance.get(level);
@@ -102,7 +101,11 @@ public class PlayerSkillInvokerEvent implements Listener {
                 return;
             }
             MessageManager.ActionBarMessage(player, String.format(Notify.ACTIVE.string, skillName));
-            user.skillState.doSkill(skill.skillID, "interact", null);
+            boolean result = user.skillState.doSkill(skill.skillID, "interact", null);
+            if (result) {
+                user.reduceMana(cost);
+                handleOffHandItemStack(player, skill.offhand, skill.offhandCost, true);
+            }
             event.setCancelled(true);
         }
     }
@@ -166,7 +169,7 @@ public class PlayerSkillInvokerEvent implements Listener {
                     event.setCancelled(true);
                     return;
                 } else {
-                    boolean result = deleteOffHandItemStack(player, skill.offhand, skill.offhandCost);
+                    boolean result = handleOffHandItemStack(player, skill.offhand, skill.offhandCost, false);
                     if (!result) {
                         MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                         event.setCancelled(true);
@@ -176,7 +179,6 @@ public class PlayerSkillInvokerEvent implements Listener {
             }
             Random random = new Random();
             int random_int = random.nextInt(100);
-            user.reduceMana(cost);
             skill.update(skill.skillID, player, user.skillState);
             assert skill.chance != null;
             int chance = skill.chance.get(level);
@@ -187,7 +189,11 @@ public class PlayerSkillInvokerEvent implements Listener {
                 return;
             }
             MessageManager.ActionBarMessage(player, String.format(Notify.ACTIVE.string, skillName));
-            user.skillState.doSkill(skill.skillID, "interactEntity", target);
+            boolean result = user.skillState.doSkill(skill.skillID, "interactEntity", target);
+            if (result) {
+                user.reduceMana(cost);
+                handleOffHandItemStack(player, skill.offhand, skill.offhandCost, true);
+            }
             event.setCancelled(true);
         }
     }
@@ -198,10 +204,11 @@ public class PlayerSkillInvokerEvent implements Listener {
      *
      * @param player   玩家
      * @param material 物品材质
-     * @param count    扣除数量
+     * @param count    扣除物品数量
+     * @param isDelete 是否需要删除物品
      * @return 是否扣除成功
      */
-    private boolean deleteOffHandItemStack(Player player, Material material, int count) {
+    private boolean handleOffHandItemStack(Player player, Material material, int count, boolean isDelete) {
         ItemStack offHandItemStack = player.getInventory().getItemInOffHand();
         if (offHandItemStack.getType() != material) {
             return false;
@@ -209,7 +216,9 @@ public class PlayerSkillInvokerEvent implements Listener {
         if (offHandItemStack.getAmount() < count) {
             return false;
         }
-        offHandItemStack.setAmount(offHandItemStack.getAmount() - count);
+        if (isDelete) {
+            offHandItemStack.setAmount(offHandItemStack.getAmount() - count);
+        }
         return true;
     }
 }

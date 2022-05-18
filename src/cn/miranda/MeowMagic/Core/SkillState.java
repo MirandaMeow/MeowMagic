@@ -71,21 +71,25 @@ public class SkillState {
     /**
      * 触发技能
      *
-     * @param skillID 技能 ID
+     * @param skillID    技能 ID
+     * @param invokeType 触发类型
+     * @param target     触发目标
+     * @return 技能是否触发成功
      */
-    public void doSkill(String skillID, String invoke, Entity entity) {
+    public boolean doSkill(String skillID, String invokeType, Entity target) {
         boolean result = false;
-        switch (invoke) {
+        switch (invokeType) {
             case "interact":
                 result = Skill.getInstance(skillID).interact(this.player, this.skillLevel.get(skillID));
                 break;
             case "interactEntity":
-                result = Skill.getInstance(skillID).interactEntity(this.player, entity, this.skillLevel.get(skillID));
+                result = Skill.getInstance(skillID).interactEntity(this.player, target, this.skillLevel.get(skillID));
                 break;
         }
         if (result) {
             this.doCoolDown(skillID);
         }
+        return result;
     }
 
     /**

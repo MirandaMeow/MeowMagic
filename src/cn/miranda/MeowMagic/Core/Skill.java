@@ -74,7 +74,7 @@ public class Skill {
         String skillInternalID = skill.getString("skill");
         assert skillInternalID != null;
         try {
-            this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class, int.class, int.class, List.class);
+            this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class, int.class, int.class, Entity.class);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -106,13 +106,14 @@ public class Skill {
      *
      * @param player 触发技能的玩家
      * @param level  技能等级
+     * @return 是否触发成功
      */
     public boolean interact(Player player, int level) {
         int distance = this.distance.get(level);
         int duration = this.duration.get(level);
         int power = this.power.get(level);
         try {
-            return (boolean) this.skill.invoke(null, player, distance, this.isRange, duration, power, new ArrayList<>());
+            return (boolean) this.skill.invoke(null, player, distance, this.isRange, duration, power, null);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             return false;
@@ -123,15 +124,16 @@ public class Skill {
      * 交互实体触发技能
      *
      * @param player 触发技能的玩家
-     * @param entity 被技能影响的实体
+     * @param target 被技能影响的实体
      * @param level  技能等级
+     * @return 是否触发成功
      */
-    public boolean interactEntity(Player player, Entity entity, int level) {
+    public boolean interactEntity(Player player, Entity target, int level) {
         int distance = this.distance.get(level);
         int duration = this.duration.get(level);
         int power = this.power.get(level);
         try {
-            return (boolean) this.skill.invoke(null, player, distance, this.isRange, duration, power, new ArrayList<>(Collections.singletonList(entity)));
+            return (boolean) this.skill.invoke(null, player, distance, this.isRange, duration, power, target);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             return false;

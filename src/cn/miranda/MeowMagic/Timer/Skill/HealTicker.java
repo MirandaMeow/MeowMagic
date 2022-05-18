@@ -14,6 +14,7 @@ public class HealTicker {
      *
      * @param player   玩家
      * @param duration 持续时间
+     * @param power    治疗量
      */
     public HealTicker(Player player, int duration, int power) {
         this.duration = duration;
