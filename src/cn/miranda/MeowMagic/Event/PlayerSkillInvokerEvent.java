@@ -58,11 +58,10 @@ public class PlayerSkillInvokerEvent implements Listener {
             if (!user.skillState.hasSkill(skill.skillID)) {
                 return;
             }
-            if (!Objects.equals(skill.invoke, "interact")) {
+            if (!Objects.equals(skill.invokeType, "interact")) {
                 return;
             }
             int level = user.skillState.skillLevel.get(skill.skillID);
-            assert skill.cost != null;
             int cost = skill.cost.get(level);
             if (!user.manaCheck(cost)) {
                 MessageManager.ActionBarMessage(player, String.format(Notify.NO_MANA.string, skillName, cost));
@@ -92,7 +91,6 @@ public class PlayerSkillInvokerEvent implements Listener {
             Random random = new Random();
             int random_int = random.nextInt(100);
             skill.update(skill.skillID, player, user.skillState);
-            assert skill.chance != null;
             int chance = skill.chance.get(level);
             if (random_int > chance) {
                 MessageManager.ActionBarMessage(player, String.format(Notify.FAILED.string, skillName));
@@ -146,7 +144,7 @@ public class PlayerSkillInvokerEvent implements Listener {
             if (!user.skillState.hasSkill(skill.skillID)) {
                 return;
             }
-            if (!Objects.equals(skill.invoke, "interactEntity")) {
+            if (!Objects.equals(skill.invokeType, "interactEntity")) {
                 return;
             }
             int level = user.skillState.skillLevel.get(skill.skillID);

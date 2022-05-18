@@ -24,7 +24,7 @@ skill01:
   offhandCost: 0
   click: "right"
   sneak: true
-  invoke: "interact"
+  invokeType: "interact"
   exp: [ 30, 40, 50, 60, 0 ]
   power: [ 5, 5, 10, 15, 20 ]
   isPositive: true
@@ -54,7 +54,7 @@ skill02:
   offhandCost: 5
   click: "right"
   sneak: true
-  invoke: "interactEntity"
+  invokeType: "interactEntity"
   exp: [ 30, 40, 50, 60, 0 ]
   power: [ 0, 0, 0, 0, 0 ]
   isPositive: true
@@ -78,7 +78,7 @@ skill03:
   duration: [ 0, 0, 0, 0, 0 ]
   cost: [ 25, 35, 35, 40, 45 ]
   cooldown: [ 120, 140, 160, 180, 200 ]
-  distance: [ 15, 18, 25, 30, 35 ]
+  distance: [ 15, 20, 25, 30, 35 ]
   isRange: false
   chance: [ 100, 100, 100, 100, 100 ]
   skill: "mineDetect"
@@ -88,7 +88,7 @@ skill03:
   offhandCost: 0
   click: "right"
   sneak: true
-  invoke: "interact"
+  invokeType: "interact"
   exp: [ 5, 15, 25, 35, 0 ]
   power: [ 0, 0, 0, 0, 0 ]
   isPositive: true

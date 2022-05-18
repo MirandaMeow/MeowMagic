@@ -32,7 +32,7 @@ public class Skill {
     public boolean sneak;
     public final List<Integer> exp;
     private final List<Integer> power;
-    public String invoke;
+    public String invokeType;
     public List<Material> offhand = new ArrayList<>();
     public String offHandItemName;
     public int offhandCost;
@@ -93,7 +93,7 @@ public class Skill {
         this.sneak = skill.getBoolean("sneak");
         this.exp = skill.getIntegerList("exp");
         this.power = skill.getIntegerList("power");
-        this.invoke = skill.getString("invoke");
+        this.invokeType = skill.getString("invokeType");
         List<String> offhand_list = skill.getStringList("offhand");
         for (String current : offhand_list) {
             this.offhand.add(Material.getMaterial(current, false));

@@ -45,6 +45,9 @@ public class ConfigManager {
             for (Map.Entry<YamlConfiguration, File> current : configs.entrySet()) {
                 YamlConfiguration currentYaml = current.getKey();
                 File currentFile = current.getValue();
+                if (currentFile.getName().equals("skills.yml")) {
+                    continue;
+                }
                 currentYaml.save(currentFile);
             }
         } catch (Exception e) {
