@@ -1,5 +1,6 @@
 package cn.miranda.MeowMagic.Event;
 
+import cn.miranda.MeowMagic.Core.Notify;
 import cn.miranda.MeowMagic.Core.Skill;
 import cn.miranda.MeowMagic.Core.User;
 import cn.miranda.MeowMagic.Manager.MessageManager;
@@ -64,25 +65,25 @@ public class PlayerSkillInvokerEvent implements Listener {
             assert skill.cost != null;
             int cost = skill.cost.get(level);
             if (!user.manaCheck(cost)) {
-                MessageManager.ActionBarMessage(player, String.format("§e无法发动§c§l%s§r§e  需要§b%d§e点魔法", skillName, cost));
+                MessageManager.ActionBarMessage(player, String.format(Notify.NO_MANA.string, skillName, cost));
                 event.setCancelled(true);
                 return;
             }
             int coolDown = user.skillState.checkCoolDown(skill.skillID);
             if (coolDown > 0) {
-                MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e还未冷却  剩余§b%d§e秒", skillName, coolDown));
+                MessageManager.ActionBarMessage(player, String.format(Notify.COOL_DOWN.string, skillName, coolDown));
                 event.setCancelled(true);
                 return;
             }
             if (skill.offhand != null) {
                 if (skill.offhand != offHand) {
-                    MessageManager.ActionBarMessage(player, String.format("§e发动§c§l%s§r§e副手需要§b%s*%d", skillName, skill.offHandItemName, skill.offhandCost));
+                    MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                     event.setCancelled(true);
                     return;
                 } else {
                     boolean result = deleteOffHandItemStack(player, skill.offhand, skill.offhandCost);
                     if (!result) {
-                        MessageManager.ActionBarMessage(player, String.format("§e发动§c§l%s§r§e副手需要§b%s*%d", skillName, skill.offHandItemName, skill.offhandCost));
+                        MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                         event.setCancelled(true);
                         return;
                     }
@@ -95,12 +96,12 @@ public class PlayerSkillInvokerEvent implements Listener {
             assert skill.chance != null;
             int chance = skill.chance.get(level);
             if (random_int > chance) {
-                MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e使用失败", skillName));
+                MessageManager.ActionBarMessage(player, String.format(Notify.FAILED.string, skillName));
                 user.skillState.doCoolDown(skill.skillID);
                 event.setCancelled(true);
                 return;
             }
-            MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e发动", skillName));
+            MessageManager.ActionBarMessage(player, String.format(Notify.ACTIVE.string, skillName));
             user.skillState.doSkill(skill.skillID, "interact", null);
             event.setCancelled(true);
         }
@@ -149,25 +150,25 @@ public class PlayerSkillInvokerEvent implements Listener {
             assert skill.cost != null;
             int cost = skill.cost.get(level);
             if (!user.manaCheck(cost)) {
-                MessageManager.ActionBarMessage(player, String.format("§e无法发动§c§l%s§r§e  需要§b%d§e点魔法", skillName, cost));
+                MessageManager.ActionBarMessage(player, String.format(Notify.NO_MANA.string, skillName, cost));
                 event.setCancelled(true);
                 return;
             }
             int coolDown = user.skillState.checkCoolDown(skill.skillID);
             if (coolDown > 0) {
-                MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e还未冷却  剩余§b%d§e秒", skillName, coolDown));
+                MessageManager.ActionBarMessage(player, String.format(Notify.COOL_DOWN.string, skillName, coolDown));
                 event.setCancelled(true);
                 return;
             }
             if (skill.offhand != null) {
                 if (skill.offhand != offHand) {
-                    MessageManager.ActionBarMessage(player, String.format("§e发动§c§l%s§r§e副手需要§b%s*%d", skillName, skill.offHandItemName, skill.offhandCost));
+                    MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                     event.setCancelled(true);
                     return;
                 } else {
                     boolean result = deleteOffHandItemStack(player, skill.offhand, skill.offhandCost);
                     if (!result) {
-                        MessageManager.ActionBarMessage(player, String.format("§e发动§c§l%s§r§e副手需要§b%s*%d", skillName, skill.offHandItemName, skill.offhandCost));
+                        MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                         event.setCancelled(true);
                         return;
                     }
@@ -180,12 +181,12 @@ public class PlayerSkillInvokerEvent implements Listener {
             assert skill.chance != null;
             int chance = skill.chance.get(level);
             if (random_int > chance) {
-                MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e使用失败", skillName));
+                MessageManager.ActionBarMessage(player, String.format(Notify.FAILED.string, skillName));
                 user.skillState.doCoolDown(skill.skillID);
                 event.setCancelled(true);
                 return;
             }
-            MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e发动", skillName));
+            MessageManager.ActionBarMessage(player, String.format(Notify.ACTIVE.string, skillName));
             user.skillState.doSkill(skill.skillID, "interactEntity", target);
             event.setCancelled(true);
         }

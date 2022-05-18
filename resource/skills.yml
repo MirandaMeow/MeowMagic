@@ -6,9 +6,11 @@ skill01:
     - ""
     - "§e恢复生命值 §b%power%"
     - "§e持续时间 §b%duration%"
-    - "§e消耗魔法 §b%cost%"
     - "§e冷却时间 §b%cooldown%"
     - "§e成功率 §b%chance%§e%"
+    - ""
+    - "§e主手需要 §b木棍"
+    - "§e消耗魔法 §b%cost%"
   duration: [ 2, 4, 6, 8, 10 ]
   cost: [ 15, 20, 25, 30, 35 ]
   cooldown: [ 15, 15, 15, 15, 15 ]
@@ -33,9 +35,12 @@ skill02:
     - "§击晕目标使其暂时失去行动能力"
     - ""
     - "§e击晕时间 §b%duration%"
-    - "§e消耗魔法 §b%cost%"
     - "§e冷却时间 §b%cooldown%"
     - "§e成功率 §b%chance%§e%"
+    - ""
+    - "§e主手需要 §b砖块"
+    - "§e副手需要 §b钻石*5"
+    - "§e消耗魔法 §b%cost%"
   duration: [ 2, 4, 6, 8, 10 ]
   cost: [ 30, 35, 40, 45, 50 ]
   cooldown: [ 20, 20, 25, 25, 30 ]
@@ -45,7 +50,7 @@ skill02:
   skill: "stun"
   item: [ BRICK ]
   offhand: DIAMOND
-  offHandItemName: 钻石
+  offHandItemName: "钻石"
   offhandCost: 5
   click: "right"
   sneak: true
