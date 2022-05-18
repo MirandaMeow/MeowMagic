@@ -19,7 +19,7 @@ skill01:
   chance: [ 60, 70, 80, 90, 100 ]
   skill: "heal"
   item: [ STICK ]
-  offhand: ""
+  offhand: []
   offHandItemName: ""
   offhandCost: 0
   click: "right"
@@ -30,11 +30,11 @@ skill01:
   isPositive: true
 skill02:
   id: "skill02"
-  name: "击晕"
+  name: "击昏"
   description:
-    - "§击晕目标使其暂时失去行动能力"
+    - "§击昏目标使其暂时失去行动能力"
     - ""
-    - "§e击晕时间 §b%duration%"
+    - "§e击昏时间 §b%duration%"
     - "§e冷却时间 §b%cooldown%"
     - "§e成功率 §b%chance%§e%"
     - ""
@@ -49,12 +49,46 @@ skill02:
   chance: [ 70, 70, 70, 70, 70 ]
   skill: "stun"
   item: [ BRICK ]
-  offhand: DIAMOND
+  offhand: [ DIAMOND ]
   offHandItemName: "钻石"
   offhandCost: 5
   click: "right"
   sneak: true
   invoke: "interactEntity"
   exp: [ 30, 40, 50, 60, 0 ]
+  power: [ 0, 0, 0, 0, 0 ]
+  isPositive: true
+skill03:
+  id: "skill03"
+  name: "地质勘探"
+  description:
+    - "§e勘探特定矿物的矿石在本层的最近位置"
+    - "§e可勘探矿物种类"
+    - "§e  - §b钻石"
+    - "§e  - §b绿宝石"
+    - "§e  - §b下界合金锭"
+    - ""
+    - "§e冷却时间 §b%cooldown%"
+    - "§e成功率 §b%chance%§e%"
+    - "§e探测范围 §b%distance%"
+    - ""
+    - "§e主手需要 §b指南针"
+    - "§e副手需要持有 §b矿物"
+    - "§e消耗魔法 §b%cost%"
+  duration: [ 0, 0, 0, 0, 0 ]
+  cost: [ 25, 35, 35, 40, 45 ]
+  cooldown: [ 120, 140, 160, 180, 200 ]
+  distance: [ 15, 18, 25, 30, 35 ]
+  isRange: false
+  chance: [ 100, 100, 100, 100, 100 ]
+  skill: "mineDetect"
+  item: [ COMPASS ]
+  offhand: [ DIAMOND, EMERALD, NETHERITE_INGOT ]
+  offHandItemName: "矿物"
+  offhandCost: 0
+  click: "right"
+  sneak: true
+  invoke: "interact"
+  exp: [ 5, 15, 25, 35, 0 ]
   power: [ 0, 0, 0, 0, 0 ]
   isPositive: true
