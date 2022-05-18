@@ -10,10 +10,10 @@ public class StunTicker {
     private int duration;
 
     /**
-     * 击晕效果定时器
+     * 击昏效果定时器
      *
      * @param duration 持续时间
-     * @param target   被击晕的目标
+     * @param target   被击昏的目标
      */
     public StunTicker(int duration, LivingEntity target) {
         this.duration = duration;

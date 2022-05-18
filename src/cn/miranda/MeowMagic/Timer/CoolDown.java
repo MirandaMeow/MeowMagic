@@ -22,18 +22,17 @@ public class CoolDown {
     public CoolDown(HashMap<String, Integer> skillCoolDown, Player player) {
         this.skillCoolDown = skillCoolDown;
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
-            for (Map.Entry<String, Integer> entry : skillCoolDown.entrySet()) {
+            for (Map.Entry<String, Integer> entry : this.skillCoolDown.entrySet()) {
                 String skillID = entry.getKey();
                 int coolDown = entry.getValue();
                 if (coolDown > 0) {
-                    skillCoolDown.put(skillID, coolDown - 1);
+                    this.skillCoolDown.put(skillID, coolDown - 1);
                 } else {
                     if (coolDown == 0) {
                         MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e冷却完成", Skill.getInstance(skillID).skillName));
                         entry.setValue(-1);
                     }
                 }
-
             }
         }, 0L, 20L);
     }
@@ -42,7 +41,6 @@ public class CoolDown {
      * 清除所有冷却时间
      */
     public void clear() {
-        skillCoolDown.replaceAll((k, v) -> 0);
+        this.skillCoolDown.replaceAll((k, v) -> -1);
     }
-
 }

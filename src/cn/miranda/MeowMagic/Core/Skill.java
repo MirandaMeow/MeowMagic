@@ -33,7 +33,7 @@ public class Skill {
     public final List<Integer> exp;
     private final List<Integer> power;
     public String invoke;
-    public Material offhand;
+    public List<Material> offhand = new ArrayList<>();
     public String offHandItemName;
     public int offhandCost;
     public boolean isPositive;
@@ -64,13 +64,13 @@ public class Skill {
         assert skill != null;
         this.skillID = skill.getString("id");
         this.skillName = skill.getString("name");
-        this.description = (List<String>) skill.getList("description");
-        this.duration = (List<Integer>) skill.getList("duration");
-        this.cost = (List<Integer>) skill.getList("cost");
-        this.coolDown = (List<Integer>) skill.getList("cooldown");
-        this.distance = (List<Integer>) skill.getList("distance");
+        this.description = skill.getStringList("description");
+        this.duration = skill.getIntegerList("duration");
+        this.cost = skill.getIntegerList("cost");
+        this.coolDown = skill.getIntegerList("cooldown");
+        this.distance = skill.getIntegerList("distance");
         this.isRange = skill.getBoolean("isRange");
-        this.chance = (List<Integer>) skill.getList("chance");
+        this.chance = skill.getIntegerList("chance");
         String skillInternalID = skill.getString("skill");
         assert skillInternalID != null;
         try {
@@ -79,8 +79,8 @@ public class Skill {
             e.printStackTrace();
         }
         List<String> items = skill.getStringList("item");
-        for (String item : items) {
-            mainHand.add(Material.getMaterial(item, false));
+        for (String current : items) {
+            mainHand.add(Material.getMaterial(current, false));
         }
         String clickString = skill.getString("click");
         if (Objects.equals(clickString, "right")) {
@@ -91,10 +91,13 @@ public class Skill {
             click.add(Action.LEFT_CLICK_BLOCK);
         }
         this.sneak = skill.getBoolean("sneak");
-        this.exp = (List<Integer>) skill.getList("exp");
-        this.power = (List<Integer>) skill.getList("power");
+        this.exp = skill.getIntegerList("exp");
+        this.power = skill.getIntegerList("power");
         this.invoke = skill.getString("invoke");
-        this.offhand = Material.getMaterial(skill.getString("offhand"), false);
+        List<String> offhand_list = skill.getStringList("offhand");
+        for (String current : offhand_list) {
+            this.offhand.add(Material.getMaterial(current, false));
+        }
         this.offHandItemName = skill.getString("offHandItemName");
         this.offhandCost = skill.getInt("offhandCost");
         this.isPositive = skill.getBoolean("isPositive");
@@ -152,7 +155,7 @@ public class Skill {
         int currentExp = players.getInt(String.format("%s.skills.%s.currentExp", player.getName(), this.skillID));
         int maxExp = players.getInt(String.format("%s.skills.%s.maxExp", player.getName(), this.skillID));
         int nowLevel = players.getInt(String.format("%s.skills.%s.level", player.getName(), this.skillID));
-        description.add(String.format("§e等级: §b%d §e经验值 §b%d/%d", nowLevel + 1, currentExp, maxExp));
+        description.add(String.format("§e等级: §b%d §e经验值 §b%d§e/§b%d", nowLevel + 1, currentExp, maxExp));
         description.add("");
         for (String line : this.description) {
             description.add(this.replace(line, nowLevel));
@@ -183,6 +186,8 @@ public class Skill {
                     return line.replace("%cooldown%", this.coolDown.get(level).toString());
                 case "chance":
                     return line.replace("%chance%", String.valueOf(this.chance.get(level)));
+                case "distance":
+                    return line.replace("%distance%", String.valueOf(this.distance.get(level)));
             }
         } else {
             return line;

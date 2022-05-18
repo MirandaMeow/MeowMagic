@@ -6,7 +6,10 @@ public enum Notify {
     NEED_OFF_HAND("§e发动§c§l%s§r§e副手需要§b%s*%d"),
     FAILED("§c§l%s§r§e使用失败"),
     ACTIVE("§c§l%s§r§e发动"),
-    NOT_CREATURE("§c目标不是生物");
+    NOT_CREATURE("§c目标不是生物"),
+    FOUND_ORE("§e当前层范围内离你最近的钻石矿位于 §b(%d %d %d)"),
+    NO_ORE("§e当前层范围内没有发现指定矿物"),
+    COOL_DOWN_CLEAR("§e所有技能冷却完成");
 
     public String string;
 

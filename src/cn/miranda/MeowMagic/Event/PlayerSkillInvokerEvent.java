@@ -76,12 +76,12 @@ public class PlayerSkillInvokerEvent implements Listener {
                 return;
             }
             if (skill.offhand != null) {
-                if (skill.offhand != offHand) {
+                if (!skill.offhand.contains(offHand)) {
                     MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                     event.setCancelled(true);
                     return;
                 } else {
-                    boolean result = handleOffHandItemStack(player, skill.offhand, skill.offhandCost, false);
+                    boolean result = handleOffHandItemStack(player, offHand, skill.offhandCost, false);
                     if (!result) {
                         MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                         event.setCancelled(true);
@@ -104,7 +104,7 @@ public class PlayerSkillInvokerEvent implements Listener {
             boolean result = user.skillState.doSkill(skill.skillID, "interact", null);
             if (result) {
                 user.reduceMana(cost);
-                handleOffHandItemStack(player, skill.offhand, skill.offhandCost, true);
+                handleOffHandItemStack(player, offHand, skill.offhandCost, true);
             }
             event.setCancelled(true);
         }
@@ -150,7 +150,6 @@ public class PlayerSkillInvokerEvent implements Listener {
                 return;
             }
             int level = user.skillState.skillLevel.get(skill.skillID);
-            assert skill.cost != null;
             int cost = skill.cost.get(level);
             if (!user.manaCheck(cost)) {
                 MessageManager.ActionBarMessage(player, String.format(Notify.NO_MANA.string, skillName, cost));
@@ -164,12 +163,12 @@ public class PlayerSkillInvokerEvent implements Listener {
                 return;
             }
             if (skill.offhand != null) {
-                if (skill.offhand != offHand) {
+                if (!skill.offhand.contains(offHand)) {
                     MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                     event.setCancelled(true);
                     return;
                 } else {
-                    boolean result = handleOffHandItemStack(player, skill.offhand, skill.offhandCost, false);
+                    boolean result = handleOffHandItemStack(player, offHand, skill.offhandCost, false);
                     if (!result) {
                         MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                         event.setCancelled(true);
@@ -180,7 +179,6 @@ public class PlayerSkillInvokerEvent implements Listener {
             Random random = new Random();
             int random_int = random.nextInt(100);
             skill.update(skill.skillID, player, user.skillState);
-            assert skill.chance != null;
             int chance = skill.chance.get(level);
             if (random_int > chance) {
                 MessageManager.ActionBarMessage(player, String.format(Notify.FAILED.string, skillName));
@@ -192,7 +190,7 @@ public class PlayerSkillInvokerEvent implements Listener {
             boolean result = user.skillState.doSkill(skill.skillID, "interactEntity", target);
             if (result) {
                 user.reduceMana(cost);
-                handleOffHandItemStack(player, skill.offhand, skill.offhandCost, true);
+                handleOffHandItemStack(player, offHand, skill.offhandCost, true);
             }
             event.setCancelled(true);
         }
