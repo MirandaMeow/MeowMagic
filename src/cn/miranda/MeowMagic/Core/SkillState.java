@@ -49,7 +49,7 @@ public class SkillState {
     public void addSkill(String skillID) {
         this.skillLevel.put(skillID, 0);
         this.skillCoolDown.put(skillID, 0);
-        players.set(String.format("%s.skills.%s.maxExp", player.getName(), skillID), Skill.getInstance(skillID).exp.get(0));
+        players.set(String.format("%s.skills.%s.maxExp", player.getName(), skillID), Skill.getSkill(skillID).exp.get(0));
         players.set(String.format("%s.skills.%s.currentExp", player.getName(), skillID), 0);
         players.set(String.format("%s.skills.%s.level", player.getName(), skillID), 0);
         this.save();
@@ -82,10 +82,10 @@ public class SkillState {
         boolean result = false;
         switch (invokeType) {
             case "interact":
-                result = Skill.getInstance(skillID).interact(this.player, this.skillLevel.get(skillID));
+                result = Skill.getSkill(skillID).interact(this.player, this.skillLevel.get(skillID));
                 break;
             case "interactEntity":
-                result = Skill.getInstance(skillID).interactEntity(this.player, target, this.skillLevel.get(skillID));
+                result = Skill.getSkill(skillID).interactEntity(this.player, target, this.skillLevel.get(skillID));
                 break;
         }
         if (result) {
@@ -100,7 +100,7 @@ public class SkillState {
      * @param skillID 技能 ID
      */
     public void doCoolDown(String skillID) {
-        this.skillCoolDown.put(skillID, Skill.getInstance(skillID).coolDown.get(this.skillLevel.get(skillID)));
+        this.skillCoolDown.put(skillID, Skill.getSkill(skillID).coolDown.get(this.skillLevel.get(skillID)));
     }
 
     /**

@@ -44,7 +44,7 @@ public class Skill {
      * @param skillID 技能 ID
      * @return 返回技能实例
      */
-    public static Skill getInstance(String skillID) {
+    public static Skill getSkill(String skillID) {
         if (skillMap.containsKey(skillID)) {
             return skillMap.get(skillID);
         } else {
@@ -203,7 +203,7 @@ public class Skill {
      * @param skillState 玩家的技能状态实例
      */
     public void update(String skillID, Player player, SkillState skillState) {
-        Skill skill = Skill.getInstance(skillID);
+        Skill skill = Skill.getSkill(skillID);
         int current = players.getInt(String.format("%s.skills.%s.currentExp", player.getName(), skillID));
         int max = players.getInt(String.format("%s.skills.%s.maxExp", player.getName(), skillID));
         int level = players.getInt(String.format("%s.skills.%s.level", player.getName(), skillID));
@@ -235,7 +235,7 @@ public class Skill {
     public static void loadAllSkills() {
         Set<String> skills_list = skills.getValues(false).keySet();
         for (String skill : skills_list) {
-            Skill.getInstance(skill);
+            Skill.getSkill(skill);
         }
     }
 }

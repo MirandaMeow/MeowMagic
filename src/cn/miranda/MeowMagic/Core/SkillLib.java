@@ -14,6 +14,7 @@ public class SkillLib {
 
     /**
      * 治疗术
+     * 主动技能
      *
      * @param player   使用治疗术的玩家
      * @param distance /
@@ -30,6 +31,7 @@ public class SkillLib {
 
     /**
      * 击昏
+     * 主动技能
      *
      * @param player   使用击昏的玩家
      * @param distance /
@@ -51,6 +53,7 @@ public class SkillLib {
 
     /**
      * 地质勘探
+     * 主动技能
      *
      * @param player   使用地质勘探的玩家
      * @param distance 勘探范围
@@ -93,7 +96,6 @@ public class SkillLib {
             }
         }
         MessageManager.Message(player, Notify.NO_ORE.string);
-        MessageManager.HoverMessage(player, "地质勘探", Skill.getInstance("skill03").getDescription(player));
         return true;
     }
 }

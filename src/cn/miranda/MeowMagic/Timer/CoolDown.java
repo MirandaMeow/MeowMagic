@@ -29,7 +29,7 @@ public class CoolDown {
                     this.skillCoolDown.put(skillID, coolDown - 1);
                 } else {
                     if (coolDown == 0) {
-                        MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e冷却完成", Skill.getInstance(skillID).skillName));
+                        MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e冷却完成", Skill.getSkill(skillID).skillName));
                         entry.setValue(-1);
                     }
                 }
