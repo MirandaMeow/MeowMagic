@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SkillPanel {
-    public static HashMap<Player, UpdateInfoPanel> updateInfo = new HashMap<>();
+    public final static HashMap<Player, UpdateInfoPanel> updateInfo = new HashMap<>();
     private final Inventory panel = Bukkit.createInventory(null, 54, "§9技能面板");
     private final Player player;
 

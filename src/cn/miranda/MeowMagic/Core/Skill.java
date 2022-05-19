@@ -19,8 +19,8 @@ import static cn.miranda.MeowMagic.Manager.ConfigManager.players;
 import static cn.miranda.MeowMagic.Manager.ConfigManager.skills;
 
 public class Skill {
-    public static HashMap<String, Skill> skillMap = new HashMap<>();
-    public static HashMap<Player, ShieldRestoreTicker> shieldData = new HashMap<>();
+    public static final HashMap<String, Skill> skillMap = new HashMap<>();
+    public static final HashMap<Player, ShieldRestoreTicker> shieldData = new HashMap<>();
     public String skillID;
     public String skillName;
     public List<String> description;
@@ -31,13 +31,13 @@ public class Skill {
     private final boolean isRange;
     public final List<Integer> chance;
     private Method skill;
-    public List<Material> mainHand = new ArrayList<>();
+    public final List<Material> mainHand = new ArrayList<>();
     public final List<Action> click = new ArrayList<>();
     public boolean sneak;
     public final List<Integer> exp;
     private final List<Integer> power;
     public String invokeType;
-    public List<Material> offhand = new ArrayList<>();
+    public final List<Material> offhand = new ArrayList<>();
     public String offHandItemName;
     public int offhandCost;
     public boolean isPositive;

@@ -12,7 +12,7 @@ public class ShieldRestoreTicker {
     private final BukkitTask task;
     public int cooldown;
     public double shield;
-    public int level;
+    public final int level;
 
     /**
      * 护盾冷却定时器

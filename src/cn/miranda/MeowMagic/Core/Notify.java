@@ -13,7 +13,7 @@ public enum Notify {
     SHIELD_READY("§e护盾已经充能完毕"),
     SHIELD_ACTIVE("§e护盾吸收了 §b%s §e伤害  护盾剩余 §b%s");
 
-    public String string;
+    public final String string;
 
     /**
      * @param string 提示文本

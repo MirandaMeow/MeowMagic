@@ -1,5 +1,6 @@
 package cn.miranda.MeowMagic.Timer.Skill;
 
+import cn.miranda.MeowMagic.Core.EffectLib;
 import cn.miranda.MeowMagic.MeowMagic;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
@@ -21,6 +22,7 @@ public class StunTicker {
             target.setAI(false);
             if (this.duration > 0) {
                 this.duration -= 1;
+                EffectLib.StunEffect(target);
             } else {
                 this.task.cancel();
                 target.setAI(true);
