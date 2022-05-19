@@ -1,6 +1,7 @@
 package cn.miranda.MeowMagic.Timer.Skill;
 
 import cn.miranda.MeowMagic.Core.Notify;
+import cn.miranda.MeowMagic.Core.User;
 import cn.miranda.MeowMagic.Manager.MessageManager;
 import cn.miranda.MeowMagic.MeowMagic;
 import org.bukkit.Bukkit;
@@ -25,13 +26,17 @@ public class ShieldRestoreTicker {
         this.cooldown = cooldown;
         this.shield = power;
         this.level = level;
+        User user = User.getUser(player);
         this.task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
             if (this.cooldown > 0) {
                 this.cooldown -= 1;
+                user.skillState.skillCoolDown.put("skill04", this.cooldown);
             } else {
+                if (!(this.shield == power)) {
+                    MessageManager.Message(player, Notify.SHIELD_READY.string);
+                }
                 this.cooldown = cooldown;
                 this.shield = power;
-                MessageManager.Message(player, Notify.SHIELD_READY.string);
             }
         }, 0L, 20L);
     }

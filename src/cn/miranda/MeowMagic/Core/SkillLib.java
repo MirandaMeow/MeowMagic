@@ -127,7 +127,7 @@ public class SkillLib {
         double shieldRemain = shieldRestoreTicker.shield;
         String formattedShieldRemain = String.format("%.2f", shieldRemain);
         if (shieldRemain > 0) {
-            MessageManager.Message(player, String.format(Notify.SHIELD_ACTIVE.string, formatted, formattedShieldRemain, shieldRestoreTicker.cooldown));
+            MessageManager.ActionBarMessage(player, String.format(Notify.SHIELD_ACTIVE.string, formatted, formattedShieldRemain));
         }
         Skill.getSkill("skill04").update(player, user.skillState);
         return true;

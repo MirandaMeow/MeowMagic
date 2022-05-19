@@ -2,7 +2,7 @@ skill01:
   id: "skill01"
   name: "治疗术"
   description:
-    - "§e在一定时间内恢复生命值"
+    - "§6在一定时间内恢复生命值"
     - ""
     - "§e恢复生命值 §b%power%"
     - "§e持续时间 §b%duration%"
@@ -11,6 +11,7 @@ skill01:
     - ""
     - "§e主手需要 §b木棍"
     - "§e消耗魔法 §b%cost%"
+    - "§e获得经验 §b使用技能"
     - ""
     - "§9主动技能"
   duration: [ 2, 4, 6, 8, 10 ]
@@ -19,11 +20,11 @@ skill01:
   distance: [ 0, 0, 0, 0, 0 ]
   chance: [ 60, 70, 80, 90, 100 ]
   exp: [ 30, 40, 50, 60, 0 ]
-  power: [ 5, 5, 10, 15, 20 ]
+  power: [ 4, 8, 12, 16, 20 ]
   isRange: false
   skill: "heal"
   icon: STICK
-  item: [ STICK ]
+  mainhand: [ STICK ]
   offhand: [ ]
   offHandItemName: ""
   offhandCost: 0
@@ -35,15 +36,15 @@ skill02:
   id: "skill02"
   name: "击昏"
   description:
-    - "§e击昏目标使其暂时失去行动能力"
+    - "§6击昏目标使其暂时失去行动能力"
     - ""
     - "§e击昏时间 §b%duration%"
     - "§e冷却时间 §b%cooldown%"
     - "§e成功率 §b%chance%§e%"
     - ""
     - "§e主手需要 §b砖块"
-    - "§e副手需要 §b钻石*5"
     - "§e消耗魔法 §b%cost%"
+    - "§e获得经验 §b使用技能"
     - ""
     - "§9主动技能"
   duration: [ 2, 4, 6, 8, 10 ]
@@ -56,10 +57,10 @@ skill02:
   isRange: false
   skill: "stun"
   icon: BRICK
-  item: [ BRICK ]
-  offhand: [ DIAMOND ]
-  offHandItemName: "钻石"
-  offhandCost: 5
+  mainhand: [ BRICK, NETHER_BRICK ]
+  offhand: [ ]
+  offHandItemName: ""
+  offhandCost: 0
   click: "right"
   sneak: true
   invokeType: "interactEntity"
@@ -68,19 +69,20 @@ skill03:
   id: "skill03"
   name: "地质勘探"
   description:
-    - "§e勘探特定矿物的矿石在本层的最近位置"
-    - "§e可勘探矿物种类"
-    - "§e  - §b钻石"
-    - "§e  - §b绿宝石"
-    - "§e  - §b下界合金锭"
+    - "§6勘探特定矿物的矿石在本层的最近位置"
+    - "§6可勘探矿物种类"
+    - "§6  - §b钻石"
+    - "§6  - §b绿宝石"
+    - "§6  - §b下界合金锭"
     - ""
     - "§e冷却时间 §b%cooldown%"
-    - "§e成功率 §b%chance%§e%"
     - "§e探测范围 §b%distance%"
+    - "§e成功率 §b%chance%§e%"
     - ""
     - "§e主手需要 §b指南针"
     - "§e副手需要持有 §b矿物"
     - "§e消耗魔法 §b%cost%"
+    - "§e获得经验 §b使用技能"
     - ""
     - "§9主动技能"
   duration: [ 0, 0, 0, 0, 0 ]
@@ -93,7 +95,7 @@ skill03:
   isRange: false
   skill: "mineDetect"
   icon: COMPASS
-  item: [ COMPASS ]
+  mainhand: [ COMPASS ]
   offhand: [ DIAMOND, EMERALD, NETHERITE_INGOT ]
   offHandItemName: "矿物"
   offhandCost: 0
@@ -105,11 +107,12 @@ skill04:
   id: "skill04"
   name: "护盾"
   description:
-    - "§e被生物击中时按照一定比例吸收伤害"
+    - "§6被生物击中时按照一定比例吸收伤害"
     - ""
     - "§e充能时间 §b%cooldown%"
     - "§e最大护盾 §b%power%"
     - "§e吸收比例 §b30§e%"
+    - "§e获得经验 §b被生物击中"
     - ""
     - "§9被动技能"
   duration: [ 0, 0, 0, 0, 0 ]
@@ -122,7 +125,7 @@ skill04:
   isRange: false
   skill: "shield"
   icon: SHIELD
-  item: [ ]
+  mainhand: [ ]
   offhand: [ ]
   offHandItemName: "钻石"
   offhandCost: 0

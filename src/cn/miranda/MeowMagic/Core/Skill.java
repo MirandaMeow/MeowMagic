@@ -77,34 +77,34 @@ public class Skill {
         this.isRange = skill.getBoolean("isRange");
         this.chance = skill.getIntegerList("chance");
         this.invokeType = skill.getString("invokeType");
-        String skillInternalID = skill.getString("skill");
-        assert skillInternalID != null;
+        String skillInvoker = skill.getString("skill");
+        assert skillInvoker != null;
         try {
             switch (this.invokeType) {
                 case "interact":
-                    this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class, int.class, int.class);
+                    this.skill = SkillLib.class.getDeclaredMethod(skillInvoker, Player.class, int.class, boolean.class, int.class, int.class);
                     break;
                 case "interactEntity":
-                    this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class, int.class, int.class, Entity.class);
+                    this.skill = SkillLib.class.getDeclaredMethod(skillInvoker, Player.class, int.class, boolean.class, int.class, int.class, Entity.class);
                     break;
                 case "playerHitByOther":
-                    this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, int.class, EntityDamageByEntityEvent.class);
+                    this.skill = SkillLib.class.getDeclaredMethod(skillInvoker, Player.class, int.class, int.class, EntityDamageByEntityEvent.class);
                     break;
             }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
-        List<String> items = skill.getStringList("item");
+        List<String> items = skill.getStringList("mainhand");
         for (String current : items) {
-            mainHand.add(Material.getMaterial(current, false));
+            this.mainHand.add(Material.getMaterial(current, false));
         }
         String clickString = skill.getString("click");
         if (Objects.equals(clickString, "right")) {
-            click.add(Action.RIGHT_CLICK_AIR);
-            click.add(Action.RIGHT_CLICK_BLOCK);
+            this.click.add(Action.RIGHT_CLICK_AIR);
+            this.click.add(Action.RIGHT_CLICK_BLOCK);
         } else {
-            click.add(Action.LEFT_CLICK_AIR);
-            click.add(Action.LEFT_CLICK_BLOCK);
+            this.click.add(Action.LEFT_CLICK_AIR);
+            this.click.add(Action.LEFT_CLICK_BLOCK);
         }
         this.sneak = skill.getBoolean("sneak");
         this.exp = skill.getIntegerList("exp");
@@ -272,5 +272,20 @@ public class Skill {
         for (String skill : skills_list) {
             Skill.getSkill(skill);
         }
+    }
+
+    /**
+     * 以技能名获取技能 ID
+     *
+     * @param skillName 技能名
+     * @return 技能 ID
+     */
+    public static String getSkillIDByName(String skillName) {
+        for (Skill skill : skillMap.values()) {
+            if (skill.skillName.equals(skillName)) {
+                return skill.skillID;
+            }
+        }
+        return null;
     }
 }

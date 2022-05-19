@@ -11,7 +11,7 @@ public enum Notify {
     NO_ORE("§e当前层范围内没有发现指定矿物"),
     COOL_DOWN_CLEAR("§e所有技能冷却完成"),
     SHIELD_READY("§e护盾已经充能完毕"),
-    SHIELD_ACTIVE("§e护盾吸收了 §b%s §e伤害, 护盾剩余 §b%s, §e护盾充能冷却 §b%d");
+    SHIELD_ACTIVE("§e护盾吸收了 §b%s §e伤害  护盾剩余 §b%s");
 
     public String string;
 

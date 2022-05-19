@@ -23,7 +23,7 @@ public class HealTicker {
             if (this.duration > 0) {
                 double playerCurrentHP = player.getHealth();
                 double playerMaxHP = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-                player.setHealth(Math.min(playerCurrentHP + (double) power / 10, playerMaxHP));
+                player.setHealth(Math.min(playerCurrentHP + (double) power / duration, playerMaxHP));
                 this.duration -= 1;
             } else {
                 this.task.cancel();

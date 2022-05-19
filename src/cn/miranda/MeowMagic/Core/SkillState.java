@@ -14,7 +14,7 @@ import static cn.miranda.MeowMagic.Manager.ConfigManager.players;
 public class SkillState {
     private final Player player;
     public HashMap<String, Integer> skillLevel = new HashMap<>();
-    private final HashMap<String, Integer> skillCoolDown = new HashMap<>();
+    public final HashMap<String, Integer> skillCoolDown = new HashMap<>();
     private final CoolDown coolDownTimer;
 
     /**
