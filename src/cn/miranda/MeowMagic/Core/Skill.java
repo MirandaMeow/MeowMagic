@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -40,6 +41,7 @@ public class Skill {
     public String offHandItemName;
     public int offhandCost;
     public boolean isPositive;
+    public ItemStack icon;
 
     /**
      * 获取技能实例（单例模式）
@@ -87,6 +89,7 @@ public class Skill {
                     break;
                 case "playerHitByOther":
                     this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, int.class, EntityDamageByEntityEvent.class);
+                    break;
             }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -113,6 +116,11 @@ public class Skill {
         this.offHandItemName = skill.getString("offHandItemName");
         this.offhandCost = skill.getInt("offhandCost");
         this.isPositive = skill.getBoolean("isPositive");
+        String icon = skill.getString("icon");
+        assert icon != null;
+        Material iconMaterial = Material.getMaterial(icon);
+        assert iconMaterial != null;
+        this.icon = new ItemStack(iconMaterial, 1);
     }
 
 

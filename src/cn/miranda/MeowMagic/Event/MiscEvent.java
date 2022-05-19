@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class MiscEvent implements Listener {
@@ -34,5 +35,17 @@ public class MiscEvent implements Listener {
             return;
         }
         event.setDroppedExp(0);
+    }
+
+    /**
+     * 禁用技能面板点击
+     *
+     * @param event 物品栏点击事件
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    private void BanClickSkillPanel(InventoryClickEvent event) {
+        if (event.getView().getTitle().contains("§9技能面板")) {
+            event.setCancelled(true);
+        }
     }
 }
