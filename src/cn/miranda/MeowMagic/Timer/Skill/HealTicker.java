@@ -2,6 +2,7 @@ package cn.miranda.MeowMagic.Timer.Skill;
 
 import cn.miranda.MeowMagic.MeowMagic;
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -21,7 +22,7 @@ public class HealTicker {
         task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
             if (this.duration > 0) {
                 double playerCurrentHP = player.getHealth();
-                double playerMaxHP = player.getMaxHealth();
+                double playerMaxHP = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
                 player.setHealth(Math.min(playerCurrentHP + (double) power / 10, playerMaxHP));
                 this.duration -= 1;
             } else {
