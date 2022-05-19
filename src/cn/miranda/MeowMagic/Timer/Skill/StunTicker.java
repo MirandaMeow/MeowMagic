@@ -17,12 +17,12 @@ public class StunTicker {
      */
     public StunTicker(int duration, LivingEntity target) {
         this.duration = duration;
-        task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
+        this.task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
             target.setAI(false);
             if (this.duration > 0) {
                 this.duration -= 1;
             } else {
-                task.cancel();
+                this.task.cancel();
                 target.setAI(true);
             }
         }, 0L, 20L);

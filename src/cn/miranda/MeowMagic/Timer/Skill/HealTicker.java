@@ -19,15 +19,15 @@ public class HealTicker {
      */
     public HealTicker(Player player, int duration, int power) {
         this.duration = duration;
-        task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
+        this.task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
             if (this.duration > 0) {
                 double playerCurrentHP = player.getHealth();
                 double playerMaxHP = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
                 player.setHealth(Math.min(playerCurrentHP + (double) power / 10, playerMaxHP));
                 this.duration -= 1;
             } else {
-                task.cancel();
+                this.task.cancel();
             }
-        }, 0, 20L);
+        }, 0L, 20L);
     }
 }

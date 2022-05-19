@@ -4,7 +4,6 @@ import cn.miranda.MeowMagic.Manager.ConfigManager;
 import cn.miranda.MeowMagic.Manager.MessageManager;
 import cn.miranda.MeowMagic.Timer.CoolDown;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -70,29 +69,6 @@ public class SkillState {
         MessageManager.Message(player, Notify.COOL_DOWN_CLEAR.string);
     }
 
-    /**
-     * 触发技能
-     *
-     * @param skillID    技能 ID
-     * @param invokeType 触发类型
-     * @param target     触发目标
-     * @return 技能是否触发成功
-     */
-    public boolean doSkill(String skillID, String invokeType, Entity target) {
-        boolean result = false;
-        switch (invokeType) {
-            case "interact":
-                result = Skill.getSkill(skillID).interact(this.player, this.skillLevel.get(skillID));
-                break;
-            case "interactEntity":
-                result = Skill.getSkill(skillID).interactEntity(this.player, target, this.skillLevel.get(skillID));
-                break;
-        }
-        if (result) {
-            this.doCoolDown(skillID);
-        }
-        return result;
-    }
 
     /**
      * 技能使用失败时让其进入冷却

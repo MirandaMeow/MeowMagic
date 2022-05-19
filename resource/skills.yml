@@ -98,3 +98,31 @@ skill03:
   exp: [ 5, 15, 25, 35, 0 ]
   power: [ 0, 0, 0, 0, 0 ]
   isPositive: true
+skill04:
+  id: "skill04"
+  name: "护盾"
+  description:
+    - "§e被生物伤害时按照一定比例吸收伤害"
+    - ""
+    - "§e恢复时间 §b%cooldown%"
+    - "§e最大护盾 §b%power%"
+    - "§e吸收比例 §b30§e%"
+    - ""
+    - "§e9被动技能"
+  duration: [ 0, 0, 0, 0, 0 ]
+  cost: [ 0, 0, 0, 0, 0 ]
+  cooldown: [ 300, 250, 200, 150, 100 ]
+  distance: [ 0, 0, 0, 0, 0 ]
+  isRange: false
+  chance: [ 100, 100, 100, 100, 100 ]
+  skill: "shield"
+  item: [ ]
+  offhand: [ ]
+  offHandItemName: "钻石"
+  offhandCost: 0
+  click: ""
+  sneak: false
+  invokeType: "playerHitByOther"
+  exp: [ 120, 140, 160, 180, 200 ]
+  power: [ 20, 25, 30, 35, 40 ]
+  isPositive: false

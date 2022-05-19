@@ -1,7 +1,7 @@
 package cn.miranda.MeowMagic.Manager;
 
 import cn.miranda.MeowMagic.Event.MiscEvent;
-import cn.miranda.MeowMagic.Event.PlayerSkillInvokerEvent;
+import cn.miranda.MeowMagic.Event.SkillInvokerEvent;
 import cn.miranda.MeowMagic.MeowMagic;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -26,7 +26,7 @@ public class ListenerManager {
      */
     public static void registerAll() {
         list.add(new MiscEvent());
-        list.add(new PlayerSkillInvokerEvent());
+        list.add(new SkillInvokerEvent());
         for (Listener listener : list) {
             register(listener);
         }

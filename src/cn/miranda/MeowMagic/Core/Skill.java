@@ -1,10 +1,12 @@
 package cn.miranda.MeowMagic.Core;
 
+import cn.miranda.MeowMagic.Timer.Skill.ShieldRestoreTicker;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,6 +19,7 @@ import static cn.miranda.MeowMagic.Manager.ConfigManager.skills;
 
 public class Skill {
     public static HashMap<String, Skill> skillMap = new HashMap<>();
+    public static HashMap<Player, ShieldRestoreTicker> shieldData = new HashMap<>();
     public String skillID;
     public String skillName;
     public List<String> description;
@@ -71,10 +74,20 @@ public class Skill {
         this.distance = skill.getIntegerList("distance");
         this.isRange = skill.getBoolean("isRange");
         this.chance = skill.getIntegerList("chance");
+        this.invokeType = skill.getString("invokeType");
         String skillInternalID = skill.getString("skill");
         assert skillInternalID != null;
         try {
-            this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class, int.class, int.class, Entity.class);
+            switch (this.invokeType) {
+                case "interact":
+                    this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class, int.class, int.class);
+                    break;
+                case "interactEntity":
+                    this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, boolean.class, int.class, int.class, Entity.class);
+                    break;
+                case "playerHitByOther":
+                    this.skill = SkillLib.class.getDeclaredMethod(skillInternalID, Player.class, int.class, int.class, EntityDamageByEntityEvent.class);
+            }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -93,7 +106,6 @@ public class Skill {
         this.sneak = skill.getBoolean("sneak");
         this.exp = skill.getIntegerList("exp");
         this.power = skill.getIntegerList("power");
-        this.invokeType = skill.getString("invokeType");
         List<String> offhand_list = skill.getStringList("offhand");
         for (String current : offhand_list) {
             this.offhand.add(Material.getMaterial(current, false));
@@ -116,7 +128,7 @@ public class Skill {
         int duration = this.duration.get(level);
         int power = this.power.get(level);
         try {
-            return (boolean) this.skill.invoke(null, player, distance, this.isRange, duration, power, null);
+            return (boolean) this.skill.invoke(null, player, distance, this.isRange, duration, power);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             return false;
@@ -142,6 +154,22 @@ public class Skill {
             return false;
         }
     }
+
+    /**
+     * @param player 触发事件的玩家
+     * @param event  触发的事件
+     * @param level  技能等级
+     */
+    public void playerHitByOther(Player player, EntityDamageByEntityEvent event, int level) {
+        int cooldown = this.coolDown.get(level);
+        int power = this.power.get(level);
+        try {
+            this.skill.invoke(null, player, cooldown, power, event);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * 获取技能说明
@@ -198,15 +226,14 @@ public class Skill {
     /**
      * 使得技能经验值提示，满足条件时升级
      *
-     * @param skillID    技能 ID
      * @param player     触发技能的玩家
      * @param skillState 玩家的技能状态实例
      */
-    public void update(String skillID, Player player, SkillState skillState) {
-        Skill skill = Skill.getSkill(skillID);
-        int current = players.getInt(String.format("%s.skills.%s.currentExp", player.getName(), skillID));
-        int max = players.getInt(String.format("%s.skills.%s.maxExp", player.getName(), skillID));
-        int level = players.getInt(String.format("%s.skills.%s.level", player.getName(), skillID));
+    public void update(Player player, SkillState skillState) {
+        Skill skill = Skill.getSkill(this.skillID);
+        int current = players.getInt(String.format("%s.skills.%s.currentExp", player.getName(), this.skillID));
+        int max = players.getInt(String.format("%s.skills.%s.maxExp", player.getName(), this.skillID));
+        int level = players.getInt(String.format("%s.skills.%s.level", player.getName(), this.skillID));
         int newMaxExp;
         current += 1;
         if (current == max) {
@@ -216,15 +243,15 @@ public class Skill {
             } else {
                 newMaxExp = 0;
             }
-            players.set(String.format("%s.skills.%s.maxExp", player.getName(), skillID), newMaxExp);
-            players.set(String.format("%s.skills.%s.currentExp", player.getName(), skillID), 0);
-            players.set(String.format("%s.skills.%s.level", player.getName(), skillID), level);
-            skillState.skillLevel.put(skillID, level);
+            players.set(String.format("%s.skills.%s.maxExp", player.getName(), this.skillID), newMaxExp);
+            players.set(String.format("%s.skills.%s.currentExp", player.getName(), this.skillID), 0);
+            players.set(String.format("%s.skills.%s.level", player.getName(), this.skillID), level);
+            skillState.skillLevel.put(this.skillID, level);
         } else {
             if (level == 4) {
                 return;
             }
-            players.set(String.format("%s.skills.%s.currentExp", player.getName(), skillID), current);
+            players.set(String.format("%s.skills.%s.currentExp", player.getName(), this.skillID), current);
         }
         skillState.save();
     }

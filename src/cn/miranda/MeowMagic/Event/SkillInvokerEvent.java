@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -18,14 +19,15 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class PlayerSkillInvokerEvent implements Listener {
+public class SkillInvokerEvent implements Listener {
     /**
      * 玩家交互方块触发技能监听器
+     * 处理 interact
      *
      * @param event 玩家交互事件
      */
     @EventHandler(priority = EventPriority.NORMAL)
-    private void PlayerSkillInvoker_Interact(PlayerInteractEvent event) {
+    private void Interact(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         User user = User.getUser(player);
         Material mainHand = player.getInventory().getItemInMainHand().getType();
@@ -74,7 +76,7 @@ public class PlayerSkillInvokerEvent implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            if (skill.offhand != null) {
+            if (!skill.offhand.isEmpty()) {
                 if (!skill.offhand.contains(offHand)) {
                     MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                     event.setCancelled(true);
@@ -90,7 +92,7 @@ public class PlayerSkillInvokerEvent implements Listener {
             }
             Random random = new Random();
             int random_int = random.nextInt(100);
-            skill.update(skill.skillID, player, user.skillState);
+            skill.update(player, user.skillState);
             int chance = skill.chance.get(level);
             if (random_int > chance) {
                 MessageManager.ActionBarMessage(player, String.format(Notify.FAILED.string, skillName));
@@ -99,9 +101,10 @@ public class PlayerSkillInvokerEvent implements Listener {
                 return;
             }
             MessageManager.ActionBarMessage(player, String.format(Notify.ACTIVE.string, skillName));
-            boolean result = user.skillState.doSkill(skill.skillID, "interact", null);
+            boolean result = skill.interact(player, level);
             if (result) {
                 user.reduceMana(cost);
+                user.skillState.doCoolDown(skill.skillID);
                 handleOffHandItemStack(player, offHand, skill.offhandCost, true);
             }
             event.setCancelled(true);
@@ -110,11 +113,12 @@ public class PlayerSkillInvokerEvent implements Listener {
 
     /**
      * 玩家交互实体触发技能监听器
+     * 处理 interactEntity
      *
      * @param event 玩家交互实体事件
      */
     @EventHandler(priority = EventPriority.NORMAL)
-    private void PlayerSkillInvoker_InteractEntity(PlayerInteractEntityEvent event) {
+    private void InteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         User user = User.getUser(player);
         Entity target = event.getRightClicked();
@@ -160,7 +164,7 @@ public class PlayerSkillInvokerEvent implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            if (skill.offhand != null) {
+            if (!skill.offhand.isEmpty()) {
                 if (!skill.offhand.contains(offHand)) {
                     MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
                     event.setCancelled(true);
@@ -176,7 +180,7 @@ public class PlayerSkillInvokerEvent implements Listener {
             }
             Random random = new Random();
             int random_int = random.nextInt(100);
-            skill.update(skill.skillID, player, user.skillState);
+            skill.update(player, user.skillState);
             int chance = skill.chance.get(level);
             if (random_int > chance) {
                 MessageManager.ActionBarMessage(player, String.format(Notify.FAILED.string, skillName));
@@ -185,12 +189,44 @@ public class PlayerSkillInvokerEvent implements Listener {
                 return;
             }
             MessageManager.ActionBarMessage(player, String.format(Notify.ACTIVE.string, skillName));
-            boolean result = user.skillState.doSkill(skill.skillID, "interactEntity", target);
+            boolean result = skill.interactEntity(player, target, level);
             if (result) {
                 user.reduceMana(cost);
+                user.skillState.doCoolDown(skill.skillID);
                 handleOffHandItemStack(player, offHand, skill.offhandCost, true);
             }
             event.setCancelled(true);
+        }
+    }
+
+    /**
+     * 玩家交互实体触发技能监听器
+     * 处理 playerHitByOther
+     *
+     * @param event 实体被伤害事件
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    private void PlayerHitByOther(EntityDamageByEntityEvent event) {
+        Entity source = event.getDamager();
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getEntity();
+        User user = User.getUser(player);
+        List<Skill> skills = new ArrayList<>();
+        for (String skillID : user.skillState.skillLevel.keySet()) {
+            Skill skill = Skill.getSkill(skillID);
+            if (skill.isPositive) {
+                continue;
+            }
+            skills.add(skill);
+        }
+        for (Skill skill : skills) {
+            if (!Objects.equals(skill.invokeType, "playerHitByOther")) {
+                continue;
+            }
+            int level = user.skillState.skillLevel.get(skill.skillID);
+            skill.playerHitByOther(player, event, level);
         }
     }
 

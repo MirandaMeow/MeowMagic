@@ -2,36 +2,37 @@ package cn.miranda.MeowMagic.Core;
 
 import cn.miranda.MeowMagic.Manager.MessageManager;
 import cn.miranda.MeowMagic.Timer.Skill.HealTicker;
+import cn.miranda.MeowMagic.Timer.Skill.ShieldRestoreTicker;
 import cn.miranda.MeowMagic.Timer.Skill.StunTicker;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 
 public class SkillLib {
 
     /**
      * 治疗术
-     * 主动技能
+     * 主动技能 interact
      *
      * @param player   使用治疗术的玩家
      * @param distance /
      * @param isRange  /
      * @param duration 持续时间
      * @param power    治疗量
-     * @param target   /
      * @return 技能是否使用成功
      */
-    public static boolean heal(Player player, int distance, boolean isRange, int duration, int power, Entity target) {
+    public static boolean heal(Player player, int distance, boolean isRange, int duration, int power) {
         new HealTicker(player, duration, power);
         return true;
     }
 
     /**
      * 击昏
-     * 主动技能
+     * 主动技能 interactEntity
      *
      * @param player   使用击昏的玩家
      * @param distance /
@@ -53,17 +54,16 @@ public class SkillLib {
 
     /**
      * 地质勘探
-     * 主动技能
+     * 主动技能 interact
      *
      * @param player   使用地质勘探的玩家
      * @param distance 勘探范围
      * @param isRange  /
      * @param duration /
      * @param power    /
-     * @param target   /
      * @return 技能是否使用成功
      */
-    public static boolean mineDetect(Player player, int distance, boolean isRange, int duration, int power, Entity target) {
+    public static boolean mineDetect(Player player, int distance, boolean isRange, int duration, int power) {
         Material material = player.getInventory().getItemInOffHand().getType();
         Material targetMaterial = null;
         switch (material) {
@@ -96,6 +96,40 @@ public class SkillLib {
             }
         }
         MessageManager.Message(player, Notify.NO_ORE.string);
+        return true;
+    }
+
+    /**
+     * 护盾
+     * 被动技能
+     *
+     * @param player   ？
+     * @param cooldown 护盾充能冷却
+     * @param power    护盾最大值
+     * @param event    将要被处理的伤害事件
+     * @return 技能是否使用成功
+     */
+    public static boolean shield(Player player, int cooldown, int power, EntityDamageByEntityEvent event) {
+        User user = User.getUser(player);
+        int level = user.skillState.skillLevel.get("skill04");
+        if (!Skill.shieldData.containsKey(player)) {
+            Skill.shieldData.put(player, new ShieldRestoreTicker(cooldown, power, level, player));
+        }
+        if (Skill.shieldData.get(player).level != level) {
+            Skill.shieldData.get(player).endTask();
+            Skill.shieldData.put(player, new ShieldRestoreTicker(cooldown, power, level, player));
+        }
+        ShieldRestoreTicker shieldRestoreTicker = Skill.shieldData.get(player);
+        double damage = event.getDamage();
+        double absorb = shieldRestoreTicker.use(damage);
+        double formatted = Double.parseDouble(String.format("%.2f", absorb));
+        event.setDamage(damage - formatted);
+        double shieldRemain = shieldRestoreTicker.shield;
+        String formattedShieldRemain = String.format("%.2f", shieldRemain);
+        if (shieldRemain > 0) {
+            MessageManager.Message(player, String.format(Notify.SHIELD_ACTIVE.string, formatted, formattedShieldRemain, shieldRestoreTicker.cooldown));
+        }
+        Skill.getSkill("skill04").update(player, user.skillState);
         return true;
     }
 }

@@ -9,7 +9,9 @@ public enum Notify {
     NOT_CREATURE("§c目标不是生物"),
     FOUND_ORE("§e当前层范围内离你最近的钻石矿位于 §b(%d %d %d)"),
     NO_ORE("§e当前层范围内没有发现指定矿物"),
-    COOL_DOWN_CLEAR("§e所有技能冷却完成");
+    COOL_DOWN_CLEAR("§e所有技能冷却完成"),
+    SHIELD_READY("§e护盾已经充能完毕"),
+    SHIELD_ACTIVE("§e护盾吸收了 §b%s §e伤害, 护盾剩余 §b%s, §e护盾充能冷却 §b%d");
 
     public String string;
 
