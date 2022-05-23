@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -27,7 +28,7 @@ public class MiscEvent implements Listener {
     }
 
     /**
-     * 禁用怪物掉落经验球
+     * 禁用怪物掉落经验球，玩家死亡仍然会掉落经验球
      *
      * @param event 实体死亡事件
      */
@@ -64,5 +65,15 @@ public class MiscEvent implements Listener {
         } else {
             panel.showSkillUpdateInfo(skillID);
         }
+    }
+
+    /**
+     * 禁用方块掉落经验球
+     *
+     * @param event 方块破坏事件
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    private void BanBlockDropExp(BlockBreakEvent event) {
+        event.setExpToDrop(0);
     }
 }

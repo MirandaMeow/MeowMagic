@@ -35,11 +35,15 @@ public class User {
             } else {
                 this.player.setLevel(mana + addMana);
             }
-            this.player.setExp((float) this.player.getLevel() / this.maxMana);
+            this.refreshExpBar();
         } else {
             this.player.setLevel(this.maxMana);
             this.player.setExp(1);
         }
+    }
+
+    public void refreshExpBar() {
+        this.player.setExp((float) this.player.getLevel() / this.maxMana);
     }
 
     /**
@@ -60,7 +64,7 @@ public class User {
     public void reduceMana(int reduce) {
         int mana = this.player.getLevel();
         this.player.setLevel(mana - reduce);
-        this.player.setExp((float) this.player.getLevel() / this.maxMana);
+        this.refreshExpBar();
     }
 
     /**
@@ -137,7 +141,7 @@ public class User {
      */
     public void setMaxMana(int maxMana) {
         this.maxMana = maxMana;
-        this.player.setExp((float) this.player.getLevel() / this.maxMana);
+        this.refreshExpBar();
         this.save();
     }
 
