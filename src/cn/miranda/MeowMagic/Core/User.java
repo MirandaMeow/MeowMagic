@@ -26,20 +26,17 @@ public class User {
 
     /**
      * 使玩家每秒恢复一定的魔法
+     *
+     * @param addMana 增加的魔法
      */
     public void reGainMana(int addMana) {
-        int mana = this.player.getLevel();
-        if (mana < this.maxMana) {
-            if (addMana == -1) {
-                this.player.setLevel(mana + this.reGainMana);
-            } else {
-                this.player.setLevel(mana + addMana);
-            }
-            this.refreshExpBar();
+        int add;
+        if (addMana == -1) {
+            add = this.reGainMana;
         } else {
-            this.player.setLevel(this.maxMana);
-            this.player.setExp(1);
+            add = addMana;
         }
+        this.addMana(add);
     }
 
     public void refreshExpBar() {
@@ -64,6 +61,12 @@ public class User {
     public void reduceMana(int reduce) {
         int mana = this.player.getLevel();
         this.player.setLevel(mana - reduce);
+        this.refreshExpBar();
+    }
+
+    public void addMana(int mana) {
+        int currentMana = this.player.getLevel();
+        this.player.setLevel(Math.min(currentMana + mana, this.maxMana));
         this.refreshExpBar();
     }
 

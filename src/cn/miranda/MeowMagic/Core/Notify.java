@@ -11,6 +11,8 @@ public enum Notify {
     NO_ORE("§e当前层范围内没有发现指定矿物"),
     COOL_DOWN_CLEAR("§e所有技能冷却完成"),
     SHIELD_READY("§e护盾已经充能完毕"),
+    ENCHANT_SUCCESS("§e附魔成功, 花费 §b%d §e绿宝石和经验值"),
+    ENCHANT_FAIL("§e附魔失败"),
     SHIELD_ACTIVE("§e护盾吸收了 §b%s §e伤害  护盾剩余 §b%s");
 
     public final String string;
