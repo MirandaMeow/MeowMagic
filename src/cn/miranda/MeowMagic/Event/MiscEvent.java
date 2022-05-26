@@ -8,7 +8,6 @@ import cn.miranda.MeowMagic.Manager.MessageManager;
 import cn.miranda.MeowMagic.MeowMagic;
 import cn.miranda.MeowMagic.Timer.Skill.ArrowShootTicker;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,17 +35,23 @@ public class MiscEvent implements Listener {
     }
 
     /**
-     * 禁用怪物掉落经验球，玩家死亡仍然会掉落经验球
+     * 禁用怪物掉落经验球
      *
      * @param event 实体死亡事件
      */
     @EventHandler(priority = EventPriority.NORMAL)
     private void BanDropExp(EntityDeathEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof Player) {
-            return;
-        }
         event.setDroppedExp(0);
+    }
+
+    /**
+     * 禁用方块掉落经验球
+     *
+     * @param event 方块破坏事件
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    private void BanBlockDropExp(BlockBreakEvent event) {
+        event.setExpToDrop(0);
     }
 
     /**
@@ -73,16 +78,6 @@ public class MiscEvent implements Listener {
         } else {
             panel.showSkillUpdateInfo(skillID);
         }
-    }
-
-    /**
-     * 禁用方块掉落经验球
-     *
-     * @param event 方块破坏事件
-     */
-    @EventHandler(priority = EventPriority.NORMAL)
-    private void BanBlockDropExp(BlockBreakEvent event) {
-        event.setExpToDrop(0);
     }
 
     /**
