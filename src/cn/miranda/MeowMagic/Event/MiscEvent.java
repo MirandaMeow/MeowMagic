@@ -6,6 +6,7 @@ import cn.miranda.MeowMagic.Core.SkillPanel;
 import cn.miranda.MeowMagic.Core.User;
 import cn.miranda.MeowMagic.Manager.MessageManager;
 import cn.miranda.MeowMagic.MeowMagic;
+import cn.miranda.MeowMagic.Timer.Skill.ArrowShootTicker;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,6 +19,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupArrowEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -110,6 +112,18 @@ public class MiscEvent implements Listener {
     private void ReScaleExp(PlayerExpChangeEvent event) {
         User user = User.getUser(event.getPlayer());
         user.refreshExpBar();
+    }
+
+    /**
+     * 禁止玩家拾取由箭雨生成的箭
+     *
+     * @param event 玩家拾取箭事件
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    private void BanArrowPick(PlayerPickupArrowEvent event) {
+        if (ArrowShootTicker.arrowIDs.contains(String.valueOf(event.getArrow().getEntityId()))) {
+            event.setCancelled(true);
+        }
     }
 
     /**

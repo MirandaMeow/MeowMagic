@@ -1,6 +1,7 @@
 package cn.miranda.MeowMagic.Core;
 
 import cn.miranda.MeowMagic.Manager.MessageManager;
+import cn.miranda.MeowMagic.Timer.Skill.ArrowShootTicker;
 import cn.miranda.MeowMagic.Timer.Skill.HealTicker;
 import cn.miranda.MeowMagic.Timer.Skill.ShieldRestoreTicker;
 import cn.miranda.MeowMagic.Timer.Skill.StunTicker;
@@ -103,7 +104,7 @@ public class SkillLib {
      * 护盾
      * 被动技能
      *
-     * @param player   ？
+     * @param player   触发护盾的玩家
      * @param cooldown 护盾充能冷却
      * @param power    护盾最大值
      * @param event    将要被处理的伤害事件
@@ -130,6 +131,22 @@ public class SkillLib {
             MessageManager.ActionBarMessage(player, String.format(Notify.SHIELD_ACTIVE.string, formatted, formattedShieldRemain));
         }
         Skill.getSkill("skill04").update(player, user.skillState);
+        return true;
+    }
+
+    /**
+     * 箭雨
+     * 主动技能 interact
+     *
+     * @param player   使用箭雨的玩家
+     * @param distance /
+     * @param isRange  /
+     * @param duration 箭雨的波数
+     * @param power    每波箭雨的箭矢数量
+     * @return 技能是否使用成功
+     */
+    public static boolean arrow(Player player, int distance, boolean isRange, int duration, int power) {
+        new ArrowShootTicker(player, duration, power);
         return true;
     }
 }

@@ -133,3 +133,36 @@ skill04:
   sneak: false
   invokeType: "playerHitByOther"
   isPositive: false
+skill05:
+  id: "skill05"
+  name: "箭雨"
+  description:
+    - "§6向前方射出大量箭矢"
+    - ""
+    - "§e箭雨波数 §b%duration%"
+    - "§e每波数量 §b%power%"
+    - "§e冷却时间 §b%cooldown%"
+    - ""
+    - "§e主手需要 §b弓"
+    - "§e消耗魔法 §b%cost%"
+    - "§e获得经验 §b使用技能"
+    - ""
+    - "§9主动技能"
+  duration: [ 4, 5, 6, 7, 8 ]
+  cost: [ 40, 55, 70, 85, 100 ]
+  cooldown: [ 30, 30, 30, 30, 30 ]
+  distance: [ 0, 0, 0, 0, 0 ]
+  chance: [ 100, 100, 100, 100, 100 ]
+  exp: [ 40, 45, 50, 55, 60 ]
+  power: [ 25, 30, 35, 40, 50 ]
+  isRange: false
+  skill: "arrow"
+  icon: BOW
+  mainhand: [ BOW ]
+  offhand: [ ]
+  offHandItemName: ""
+  offhandCost: 0
+  click: "right"
+  sneak: true
+  invokeType: "interact"
+  isPositive: true
