@@ -36,7 +36,7 @@ public class ArrowShootTicker {
                 Vector y_axis = new Vector(0, 1, 0);
                 for (int i = 0; i < this.power; i++) {
                     Vector a, b, loc = player.getEyeLocation().getDirection();
-                    double range = 30 % 360;
+                    double range = 15 % 360;
                     double phi = (range / 180) * Math.PI;
                     Vector ax1 = loc.getCrossProduct(z_axis);
                     if (ax1.length() < 0.01) {
