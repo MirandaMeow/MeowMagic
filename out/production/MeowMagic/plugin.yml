@@ -1,6 +1,6 @@
 name: MeowMagic
 main: cn.miranda.MeowMagic.MeowMagic
-version: 0.0.0.21
+version: 0.0.0.22
 author: Miranda
 description: 猫子魔法
 softdepend: [ ]
