@@ -1,8 +1,10 @@
 package cn.miranda.MeowMagic.Core;
 
+import cn.miranda.MeowMagic.Manager.ConfigManager;
 import cn.miranda.MeowMagic.Timer.UpdateInfoPanel;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +44,9 @@ public class SkillPanel {
         }
         this.panel.setItem(43, cancelButton);
         User user = User.getUser(player);
-        for (String skillID : user.skillState.skillLevel.keySet()) {
+        ConfigurationSection skillConfig = ConfigManager.players.getConfigurationSection(String.format("%s.skills", this.player.getName()));
+        assert skillConfig != null;
+        for (String skillID : skillConfig.getValues(false).keySet()) {
             Skill skill = Skill.getSkill(skillID);
             ItemStack skillIcon = skill.icon;
             List<String> lore = skill.getDescription(player, user.skillState.getLevel(skillID));

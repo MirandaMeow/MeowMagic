@@ -25,10 +25,10 @@ public class CoolDown {
             for (Map.Entry<String, Integer> entry : this.skillCoolDown.entrySet()) {
                 String skillID = entry.getKey();
                 int coolDown = entry.getValue();
-                if (coolDown > 0) {
+                if (coolDown > 1) {
                     this.skillCoolDown.put(skillID, coolDown - 1);
                 } else {
-                    if (coolDown == 0) {
+                    if (coolDown == 1) {
                         MessageManager.ActionBarMessage(player, String.format("§c§l%s§r§e冷却完成", Skill.getSkill(skillID).skillName));
                         entry.setValue(-1);
                     }

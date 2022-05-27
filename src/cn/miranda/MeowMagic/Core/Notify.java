@@ -19,8 +19,8 @@ public enum Notify {
     NO_PLAYER_ERROR("§c玩家不在线或不存在"),
     INVENTORY_FULL("§c背包已满"),
     SKILL_NOT_FOUND("§c技能不存在"),
-    SKILL_GET("§e习得了技能 §b%s"),
-    SKILL_ALREADY_GET("§e已经习得技能 §b%s §e无法重复学习"),
+    SKILL_GET("§e习得了技能 §c§l%s"),
+    SKILL_ALREADY_GET("§e已经习得技能 §c§l%s §e无法重复学习"),
     SHIELD_ACTIVE("§e护盾吸收了 §b%s §e伤害  护盾剩余 §b%s");
 
     public final String string;

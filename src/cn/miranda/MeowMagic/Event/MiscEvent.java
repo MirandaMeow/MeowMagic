@@ -152,11 +152,11 @@ public class MiscEvent implements Listener {
         if (event.getHand().equals(EquipmentSlot.OFF_HAND)) {
             return;
         }
-        String itemName = hand.getItemMeta().getDisplayName();
+        String itemName = hand.getItemMeta().getDisplayName().replace("§", "");
         if (!itemName.contains("技能书")) {
             return;
         }
-        String skillName = itemName.replace("§c§l", "").replace("§9技能书", "").replace(" ", "");
+        String skillName = itemName.substring(2).substring(0, itemName.length() - 7);
         String skillID = Skill.getSkillIDByName(skillName);
         User user = User.getUser(player);
         if (user.skillState.hasSkill(skillID)) {
@@ -164,6 +164,7 @@ public class MiscEvent implements Listener {
         } else {
             player.getInventory().getItemInMainHand().setAmount(hand.getAmount() - 1);
             MessageManager.Message(player, String.format(Notify.SKILL_GET.string, skillName));
+            user.skillState.addSkill(skillID);
         }
     }
 
