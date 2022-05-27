@@ -21,12 +21,12 @@ public class UpdateInfoPanel {
             Objective objective;
             if (player.getScoreboard().getObjective("SkillPanel") == null) {
                 scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-                objective = scoreboard.registerNewObjective("SkillPanel", "dummy", "§c§l" + skill.skillName, RenderType.INTEGER);
+                objective = scoreboard.registerNewObjective("SkillPanel", "dummy", "§9§l" + skill.skillName, RenderType.INTEGER);
             } else {
                 scoreboard = player.getScoreboard();
                 objective = scoreboard.getObjective("SkillPanel");
                 assert objective != null;
-                objective.setDisplayName("§c§l" + skill.skillName);
+                objective.setDisplayName("§9§l" + skill.skillName);
             }
             objective.setDisplaySlot(DisplaySlot.SIDEBAR);
             int cooldown = User.getUser(player).skillState.checkCoolDown(skillID);

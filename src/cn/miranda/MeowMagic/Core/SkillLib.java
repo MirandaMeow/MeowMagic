@@ -112,7 +112,7 @@ public class SkillLib {
      */
     public static boolean shield(Player player, int cooldown, int power, EntityDamageByEntityEvent event) {
         User user = User.getUser(player);
-        int level = user.skillState.skillLevel.get("skill04");
+        int level = user.skillState.getLevel("skill04");
         if (!Skill.shieldData.containsKey(player)) {
             Skill.shieldData.put(player, new ShieldRestoreTicker(cooldown, power, level, player));
         }

@@ -64,7 +64,7 @@ public class SkillInvokerEvent implements Listener {
             if (!Objects.equals(skill.invokeType, "interact")) {
                 return;
             }
-            int level = user.skillState.skillLevel.get(skill.skillID);
+            int level = user.skillState.getLevel(skill.skillID);
             int cost = skill.cost.get(level);
             if (!user.manaCheck(cost)) {
                 MessageManager.ActionBarMessage(player, String.format(Notify.NO_MANA.string, skillName, cost));
@@ -155,7 +155,7 @@ public class SkillInvokerEvent implements Listener {
             if (!Objects.equals(skill.invokeType, "interactEntity")) {
                 return;
             }
-            int level = user.skillState.skillLevel.get(skill.skillID);
+            int level = user.skillState.getLevel(skill.skillID);
             int cost = skill.cost.get(level);
             if (!user.manaCheck(cost)) {
                 MessageManager.ActionBarMessage(player, String.format(Notify.NO_MANA.string, skillName, cost));
@@ -232,7 +232,7 @@ public class SkillInvokerEvent implements Listener {
             if (!Objects.equals(skill.invokeType, "playerHitByOther")) {
                 continue;
             }
-            int level = user.skillState.skillLevel.get(skill.skillID);
+            int level = user.skillState.getLevel(skill.skillID);
             skill.playerHitByOther(player, event, level);
         }
     }

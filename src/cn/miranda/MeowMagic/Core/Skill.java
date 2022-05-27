@@ -180,14 +180,13 @@ public class Skill {
         }
     }
 
-
     /**
      * 获取技能说明
      *
      * @param player 指定玩家
      * @return 返回技能说明文本列表
      */
-    public List<String> getDescription(Player player) {
+    public List<String> getDescription(Player player, int level) {
         List<String> description = new ArrayList<>();
         description.add("§c§l" + this.skillName);
         int currentExp = players.getInt(String.format("%s.skills.%s.currentExp", player.getName(), this.skillID));
@@ -196,9 +195,35 @@ public class Skill {
         description.add(String.format("§e等级: §b%d §e经验值 §b%d§e/§b%d", nowLevel + 1, currentExp, maxExp));
         description.add("");
         for (String line : this.description) {
-            description.add(this.replace(line, nowLevel));
+            description.add(this.replace(line, level));
         }
         return description;
+    }
+
+    /**
+     * 将列表转化为字符串
+     *
+     * @param list 将要被转换的列表
+     * @return 转化后的字符串
+     */
+    private String listToString(List<Integer> list, boolean isPercentage, int level) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            int current = list.get(i);
+            if (i == level) {
+                builder.append("§9");
+            } else {
+                builder.append("§b");
+            }
+            builder.append(current);
+            if (isPercentage) {
+                builder.append("%§e/");
+            } else {
+                builder.append("§e/");
+            }
+        }
+        String out = builder.toString();
+        return out.substring(0, out.length() - 3);
     }
 
     /**
@@ -215,17 +240,18 @@ public class Skill {
         if (matcher.find()) {
             switch (matcher.group(1)) {
                 case "power":
-                    return line.replace("%power%", String.valueOf(this.power.get(level)));
+                    return line.replace("%power%", this.listToString(this.power, false, level));
                 case "duration":
-                    return line.replace("%duration%", this.duration.get(level).toString());
+                    return line.replace("%duration%", this.listToString(this.duration, false, level));
                 case "cost":
-                    return line.replace("%cost%", this.cost.get(level).toString());
+                    return line.replace("%cost%", this.listToString(this.cost, false, level));
                 case "cooldown":
-                    return line.replace("%cooldown%", this.coolDown.get(level).toString());
+                    return line.replace("%cooldown%", this.listToString(this.coolDown, false, level));
                 case "chance":
-                    return line.replace("%chance%", String.valueOf(this.chance.get(level)));
+                    line = line.substring(0, line.length() - 1);
+                    return line.replace("%chance%", this.listToString(this.chance, true, level));
                 case "distance":
-                    return line.replace("%distance%", String.valueOf(this.distance.get(level)));
+                    return line.replace("%distance%", this.listToString(this.distance, false, level));
             }
         } else {
             return line;

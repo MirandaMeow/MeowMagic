@@ -98,4 +98,14 @@ public class SkillState {
     public int checkCoolDown(String skillID) {
         return this.skillCoolDown.get(skillID);
     }
+
+    /**
+     * 获取技能等级
+     *
+     * @param skillID 技能 ID
+     * @return 返回技能等级
+     */
+    public int getLevel(String skillID) {
+        return this.skillLevel.get(skillID);
+    }
 }

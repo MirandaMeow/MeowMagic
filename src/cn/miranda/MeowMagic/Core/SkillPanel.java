@@ -44,7 +44,7 @@ public class SkillPanel {
         for (String skillID : user.skillState.skillLevel.keySet()) {
             Skill skill = Skill.getSkill(skillID);
             ItemStack skillIcon = skill.icon;
-            List<String> lore = skill.getDescription(player);
+            List<String> lore = skill.getDescription(player, user.skillState.getLevel(skillID));
             lore.remove(0);
             ItemMeta iconMeta = skillIcon.getItemMeta();
             assert iconMeta != null;
@@ -102,6 +102,9 @@ public class SkillPanel {
     public void closeSkillUpdateInfo() {
         Scoreboard scoreboard = this.player.getScoreboard();
         scoreboard.clearSlot(DisplaySlot.SIDEBAR);
-        updateInfo.get(this.player).stopTick();
+        UpdateInfoPanel updateInfoPanel = updateInfo.get(this.player);
+        if (updateInfoPanel != null) {
+            updateInfoPanel.stopTick();
+        }
     }
 }
