@@ -1,6 +1,7 @@
 package cn.miranda.MeowMagic.Core;
 
 import cn.miranda.MeowMagic.Event.PlayerGainSkillExp;
+import cn.miranda.MeowMagic.Lib.Skills;
 import cn.miranda.MeowMagic.Timer.Skill.ShieldRestoreTicker;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -84,13 +85,13 @@ public class Skill {
         try {
             switch (this.invokeType) {
                 case "interact":
-                    this.skill = SkillLib.class.getDeclaredMethod(skillInvoker, Player.class, int.class, boolean.class, int.class, int.class);
+                    this.skill = Skills.class.getDeclaredMethod(skillInvoker, Player.class, int.class, boolean.class, int.class, int.class);
                     break;
                 case "interactEntity":
-                    this.skill = SkillLib.class.getDeclaredMethod(skillInvoker, Player.class, int.class, boolean.class, int.class, int.class, Entity.class);
+                    this.skill = Skills.class.getDeclaredMethod(skillInvoker, Player.class, int.class, boolean.class, int.class, int.class, Entity.class);
                     break;
                 case "playerHitByOther":
-                    this.skill = SkillLib.class.getDeclaredMethod(skillInvoker, Player.class, int.class, int.class, EntityDamageByEntityEvent.class);
+                    this.skill = Skills.class.getDeclaredMethod(skillInvoker, Player.class, int.class, int.class, EntityDamageByEntityEvent.class);
                     break;
             }
         } catch (NoSuchMethodException e) {

@@ -1,9 +1,9 @@
 package cn.miranda.MeowMagic.Event;
 
-import cn.miranda.MeowMagic.Core.EffectLib;
 import cn.miranda.MeowMagic.Core.Notify;
 import cn.miranda.MeowMagic.Core.Skill;
 import cn.miranda.MeowMagic.Core.User;
+import cn.miranda.MeowMagic.Lib.Effects;
 import cn.miranda.MeowMagic.Manager.MessageManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -107,9 +107,9 @@ public class SkillInvokerEvent implements Listener {
                 user.reduceMana(cost);
                 user.skillState.doCoolDown(skill.skillID);
                 handleOffHandItemStack(player, offHand, skill.offhandCost, true);
-                EffectLib.SkillSuccess(player);
+                Effects.SkillSuccess(player);
             } else {
-                EffectLib.SkillFail(player);
+                Effects.SkillFail(player);
             }
             event.setCancelled(true);
         }
@@ -198,9 +198,9 @@ public class SkillInvokerEvent implements Listener {
                 user.reduceMana(cost);
                 user.skillState.doCoolDown(skill.skillID);
                 handleOffHandItemStack(player, offHand, skill.offhandCost, true);
-                EffectLib.SkillSuccess(player);
+                Effects.SkillSuccess(player);
             } else {
-                EffectLib.SkillFail(player);
+                Effects.SkillFail(player);
             }
             event.setCancelled(true);
         }

@@ -1,5 +1,9 @@
-package cn.miranda.MeowMagic.Core;
+package cn.miranda.MeowMagic.Lib;
 
+import cn.miranda.MeowMagic.Core.Notify;
+import cn.miranda.MeowMagic.Core.Skill;
+import cn.miranda.MeowMagic.Core.SkillPanel;
+import cn.miranda.MeowMagic.Core.User;
 import cn.miranda.MeowMagic.Manager.MessageManager;
 import cn.miranda.MeowMagic.Timer.Skill.ArrowShootTicker;
 import cn.miranda.MeowMagic.Timer.Skill.HealTicker;
@@ -13,7 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 
-public class SkillLib {
+public class Skills {
 
     /**
      * 治疗术

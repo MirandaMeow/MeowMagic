@@ -1,6 +1,6 @@
 package cn.miranda.MeowMagic.Timer.Skill;
 
-import cn.miranda.MeowMagic.Core.EffectLib;
+import cn.miranda.MeowMagic.Lib.Effects;
 import cn.miranda.MeowMagic.MeowMagic;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
@@ -26,7 +26,7 @@ public class HealTicker {
                 double playerMaxHP = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
                 player.setHealth(Math.min(playerCurrentHP + (double) power / duration, playerMaxHP));
                 this.duration -= 1;
-                EffectLib.HealEffect(player);
+                Effects.HealEffect(player);
             } else {
                 this.task.cancel();
             }

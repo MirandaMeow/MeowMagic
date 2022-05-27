@@ -1,4 +1,4 @@
-package cn.miranda.MeowMagic.Core;
+package cn.miranda.MeowMagic.Lib;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -7,7 +7,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-public class EffectLib {
+public class Effects {
     public static void SkillSuccess(Player player) {
         World world = player.getWorld();
         Location location = player.getLocation().add(0, 1, 0);
