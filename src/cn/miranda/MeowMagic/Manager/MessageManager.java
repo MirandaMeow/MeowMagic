@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class MessageManager {
      * @param player  接收信息的玩家
      * @param message 消息内容
      */
-    public static void Message(Player player, String message) {
+    public static void Message(CommandSender player, String message) {
         player.sendMessage(message);
     }
 

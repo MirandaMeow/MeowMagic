@@ -190,11 +190,13 @@ public class Skill {
     public List<String> getDescription(Player player, int level) {
         List<String> description = new ArrayList<>();
         description.add("§c§l" + this.skillName);
-        int currentExp = players.getInt(String.format("%s.skills.%s.currentExp", player.getName(), this.skillID));
-        int maxExp = players.getInt(String.format("%s.skills.%s.maxExp", player.getName(), this.skillID));
-        int nowLevel = players.getInt(String.format("%s.skills.%s.level", player.getName(), this.skillID));
-        description.add(String.format("§e等级: §b%d §e经验值 §b%d§e/§b%d", nowLevel + 1, currentExp, maxExp));
-        description.add("");
+        if (level != -1) {
+            int currentExp = players.getInt(String.format("%s.skills.%s.currentExp", player.getName(), this.skillID));
+            int maxExp = players.getInt(String.format("%s.skills.%s.maxExp", player.getName(), this.skillID));
+            int nowLevel = players.getInt(String.format("%s.skills.%s.level", player.getName(), this.skillID));
+            description.add(String.format("§e等级: §b%d §e经验值 §b%d§e/§b%d", nowLevel + 1, currentExp, maxExp));
+            description.add("");
+        }
         for (String line : this.description) {
             description.add(this.replace(line, level));
         }

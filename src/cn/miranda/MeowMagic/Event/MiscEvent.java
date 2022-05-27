@@ -17,8 +17,10 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -132,6 +134,36 @@ public class MiscEvent implements Listener {
     private void BanArrowPick(PlayerPickupArrowEvent event) {
         if (ArrowShootTicker.arrowIDs.contains(String.valueOf(event.getArrow().getEntityId()))) {
             event.setCancelled(true);
+        }
+    }
+
+    /**
+     * 玩家使用技能书
+     *
+     * @param event 玩家交互时间
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    private void LearnSkill(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        ItemStack hand = player.getInventory().getItemInMainHand();
+        if (!hand.getType().equals(Material.PAPER)) {
+            return;
+        }
+        if (event.getHand().equals(EquipmentSlot.OFF_HAND)) {
+            return;
+        }
+        String itemName = hand.getItemMeta().getDisplayName();
+        if (!itemName.contains("技能书")) {
+            return;
+        }
+        String skillName = itemName.replace("§c§l", "").replace("§9技能书", "").replace(" ", "");
+        String skillID = Skill.getSkillIDByName(skillName);
+        User user = User.getUser(player);
+        if (user.skillState.hasSkill(skillID)) {
+            MessageManager.Message(player, String.format(Notify.SKILL_ALREADY_GET.string, skillName));
+        } else {
+            player.getInventory().getItemInMainHand().setAmount(hand.getAmount() - 1);
+            MessageManager.Message(player, String.format(Notify.SKILL_GET.string, skillName));
         }
     }
 

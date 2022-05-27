@@ -39,6 +39,9 @@ public class User {
         this.addMana(add);
     }
 
+    /**
+     * 刷新玩家的经验条
+     */
     public void refreshExpBar() {
         this.player.setExp((float) this.player.getLevel() / this.maxMana);
     }
@@ -64,6 +67,11 @@ public class User {
         this.refreshExpBar();
     }
 
+    /**
+     * 增加玩家的魔法值
+     *
+     * @param mana 增加的魔法值
+     */
     public void addMana(int mana) {
         int currentMana = this.player.getLevel();
         this.player.setLevel(Math.min(currentMana + mana, this.maxMana));

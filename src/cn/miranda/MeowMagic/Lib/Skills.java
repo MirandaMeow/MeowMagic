@@ -2,7 +2,6 @@ package cn.miranda.MeowMagic.Lib;
 
 import cn.miranda.MeowMagic.Core.Notify;
 import cn.miranda.MeowMagic.Core.Skill;
-import cn.miranda.MeowMagic.Core.SkillPanel;
 import cn.miranda.MeowMagic.Core.User;
 import cn.miranda.MeowMagic.Manager.MessageManager;
 import cn.miranda.MeowMagic.Timer.Skill.ArrowShootTicker;
@@ -16,8 +15,23 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Skills {
+    /**
+     * 获取所有技能名称
+     *
+     * @return 所有技能名称
+     */
+    public static List<String> getAllSkillName() {
+        List<String> names = new ArrayList<>();
+        for (Skill skill : Skill.skillMap.values()) {
+            names.add(skill.skillName);
+        }
+        return names;
+    }
 
     /**
      * 治疗术

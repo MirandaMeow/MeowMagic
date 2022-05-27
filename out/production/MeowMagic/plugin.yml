@@ -1,8 +1,17 @@
 name: MeowMagic
 main: cn.miranda.MeowMagic.MeowMagic
-version: 0.0.0.23
+version: 0.0.0.24
 author: Miranda
 description: 猫子魔法
 softdepend: [ ]
 load: POSTWORLD
 api-version: 1.16
+
+commands:
+  skills:
+    description: 打开技能面板
+    permission: cn.miranda.meowmagic.skills
+    usage: /skills
+  magicscroll:
+    description: 获得技能书
+    permission: cn.miranda.meowmagic.magicscroll

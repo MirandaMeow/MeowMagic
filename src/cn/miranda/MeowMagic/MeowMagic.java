@@ -2,6 +2,7 @@ package cn.miranda.MeowMagic;
 
 import cn.miranda.MeowMagic.Core.Skill;
 import cn.miranda.MeowMagic.Core.User;
+import cn.miranda.MeowMagic.Manager.CommandManager;
 import cn.miranda.MeowMagic.Manager.ConfigManager;
 import cn.miranda.MeowMagic.Manager.ListenerManager;
 import cn.miranda.MeowMagic.Manager.MessageManager;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 public class MeowMagic extends JavaPlugin {
     public static MeowMagic plugin;
     public String version;
-    public static AutoRegainMana regain;
+    private AutoRegainMana regain;
     public static final HashMap<Player, User> users = new HashMap<>();
 
     /**
@@ -31,10 +32,11 @@ public class MeowMagic extends JavaPlugin {
     public void onEnable() {
         MessageManager.Console(String.format("[猫子魔法] 启动 版本 %s", this.version));
         ListenerManager.registerAll();
-        regain = AutoRegainMana.getInstance();
-        regain.setOn();
+        this.regain = AutoRegainMana.getInstance();
+        this.regain.setOn();
         ConfigManager.loadConfigs();
         Skill.loadAllSkills();
+        CommandManager.registerAll();
     }
 
     /**
@@ -42,7 +44,7 @@ public class MeowMagic extends JavaPlugin {
      */
     public void onDisable() {
         MessageManager.Console(String.format("[猫子魔法] 禁用 版本 %s", this.version));
-        regain.setOff();
+        this.regain.setOff();
         ConfigManager.saveConfigs();
     }
 }

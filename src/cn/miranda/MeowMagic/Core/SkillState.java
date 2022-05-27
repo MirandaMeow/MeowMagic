@@ -48,10 +48,24 @@ public class SkillState {
     public void addSkill(String skillID) {
         this.skillLevel.put(skillID, 0);
         this.skillCoolDown.put(skillID, 0);
-        players.set(String.format("%s.skills.%s.maxExp", player.getName(), skillID), Skill.getSkill(skillID).exp.get(0));
-        players.set(String.format("%s.skills.%s.currentExp", player.getName(), skillID), 0);
-        players.set(String.format("%s.skills.%s.level", player.getName(), skillID), 0);
+        players.set(String.format("%s.skills.%s.maxExp", this.player.getName(), skillID), Skill.getSkill(skillID).exp.get(0));
+        players.set(String.format("%s.skills.%s.currentExp", this.player.getName(), skillID), 0);
+        players.set(String.format("%s.skills.%s.level", this.player.getName(), skillID), 0);
         this.save();
+    }
+
+    /**
+     * 移除玩家的一个技能
+     *
+     * @param skillID 技能 ID
+     */
+    public void removeSkill(String skillID) {
+        if (this.hasSkill(skillID)) {
+            this.skillLevel.remove(skillID);
+            this.skillCoolDown.remove(skillID);
+            players.set(String.format("%s.skills.%s", this.player.getName(), skillID), null);
+            this.save();
+        }
     }
 
     /**
@@ -66,7 +80,7 @@ public class SkillState {
      */
     public void clearCoolDown() {
         this.coolDownTimer.clear();
-        MessageManager.Message(player, Notify.COOL_DOWN_CLEAR.string);
+        MessageManager.Message(this.player, Notify.COOL_DOWN_CLEAR.string);
     }
 
 

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class SkillPanel {
     public final static HashMap<Player, UpdateInfoPanel> updateInfo = new HashMap<>();
-    private final Inventory panel = Bukkit.createInventory(null, 54, "§9技能面板");
+    private final Inventory panel;
     private final Player player;
 
     /**
@@ -33,6 +33,7 @@ public class SkillPanel {
         this.setItemName(pinkPanelBanner, "§9技能面板");
         this.setItemName(whitePanelBanner, "§9技能面板");
         this.setItemName(cancelButton, "§c取消显示");
+        this.panel = Bukkit.createInventory(null, 54, String.format("§9技能面板 - §d%s", this.player.getName()));
         for (int i : pink) {
             this.panel.setItem(i, pinkPanelBanner);
         }

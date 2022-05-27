@@ -13,6 +13,14 @@ public enum Notify {
     SHIELD_READY("§e护盾已经充能完毕"),
     ENCHANT_SUCCESS("§e附魔成功, 花费 §b%d §e绿宝石和经验值"),
     ENCHANT_FAIL("§e附魔失败"),
+    NO_CONSOLE("§c该命令不能在控制台执行"),
+    NO_PERMISSION("§c你没有执行该命令的权限"),
+    COMMAND_LENGTH_ERROR("§c命令参数错误"),
+    NO_PLAYER_ERROR("§c玩家不在线或不存在"),
+    INVENTORY_FULL("§c背包已满"),
+    SKILL_NOT_FOUND("§c技能不存在"),
+    SKILL_GET("§e习得了技能 §b%s"),
+    SKILL_ALREADY_GET("§e已经习得技能 §b%s §e无法重复学习"),
     SHIELD_ACTIVE("§e护盾吸收了 §b%s §e伤害  护盾剩余 §b%s");
 
     public final String string;

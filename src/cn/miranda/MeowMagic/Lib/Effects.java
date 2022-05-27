@@ -8,6 +8,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class Effects {
+    /**
+     * 技能使用成功的效果
+     *
+     * @param player 玩家
+     */
     public static void SkillSuccess(Player player) {
         World world = player.getWorld();
         Location location = player.getLocation().add(0, 1, 0);
@@ -15,6 +20,11 @@ public class Effects {
         world.playSound(location, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1, 1);
     }
 
+    /**
+     * 技能使用失败的效果
+     *
+     * @param player 玩家
+     */
     public static void SkillFail(Player player) {
         World world = player.getWorld();
         Location location = player.getLocation().add(0, 1, 0);
@@ -22,6 +32,11 @@ public class Effects {
         world.playSound(location, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1, 1);
     }
 
+    /**
+     * 治疗术的效果
+     *
+     * @param player 玩家
+     */
     public static void HealEffect(Player player) {
         World world = player.getWorld();
         Location location = player.getLocation().add(0, 1, 0);
@@ -29,6 +44,11 @@ public class Effects {
         world.playSound(location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
     }
 
+    /**
+     * 击昏的效果
+     *
+     * @param target 目标
+     */
     public static void StunEffect(Entity target) {
         World world = target.getWorld();
         Location location = target.getLocation().add(0, 1, 0);

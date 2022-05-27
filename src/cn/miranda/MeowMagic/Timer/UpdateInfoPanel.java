@@ -14,6 +14,12 @@ import org.bukkit.scoreboard.Scoreboard;
 public class UpdateInfoPanel {
     private final BukkitTask task;
 
+    /**
+     * 更新玩家右侧栏定时器
+     *
+     * @param player  玩家
+     * @param skillID 技能 ID
+     */
     public UpdateInfoPanel(Player player, String skillID) {
         this.task = Bukkit.getScheduler().runTaskTimer(MeowMagic.plugin, () -> {
             Skill skill = Skill.getSkill(skillID);
