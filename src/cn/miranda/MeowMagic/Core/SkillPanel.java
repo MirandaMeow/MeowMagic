@@ -78,6 +78,13 @@ public class SkillPanel {
     }
 
     /**
+     * 打开技能面板
+     */
+    public void openPanel() {
+        this.player.openInventory(this.panel);
+    }
+
+    /**
      * 在计分板显示技能升级信息
      *
      * @param skillID 技能 ID

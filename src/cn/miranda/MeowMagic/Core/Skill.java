@@ -1,6 +1,8 @@
 package cn.miranda.MeowMagic.Core;
 
+import cn.miranda.MeowMagic.Event.PlayerGainSkillExp;
 import cn.miranda.MeowMagic.Timer.Skill.ShieldRestoreTicker;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -261,6 +263,7 @@ public class Skill {
             }
             players.set(String.format("%s.skills.%s.currentExp", player.getName(), this.skillID), current);
         }
+        Bukkit.getPluginManager().callEvent(new PlayerGainSkillExp(player));
         skillState.save();
     }
 

@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 public class MiscEvent implements Listener {
@@ -96,6 +97,19 @@ public class MiscEvent implements Listener {
             MessageManager.Message(player, Notify.ENCHANT_FAIL.string);
             event.setCancelled(true);
         }
+    }
+
+    /**
+     * @param event 玩家得到经验值事件
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    private void UpdateSkillPanel(PlayerGainSkillExp event) {
+        Player player = event.getPlayer();
+        InventoryView inventoryView = player.getOpenInventory();
+        if (!inventoryView.getTitle().equals("§9技能面板")) {
+            return;
+        }
+        new SkillPanel(player).openPanel();
     }
 
     /**
