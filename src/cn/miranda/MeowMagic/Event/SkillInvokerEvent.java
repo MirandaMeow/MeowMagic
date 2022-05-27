@@ -79,13 +79,21 @@ public class SkillInvokerEvent implements Listener {
             }
             if (!skill.offhand.isEmpty()) {
                 if (!skill.offhand.contains(offHand)) {
-                    MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
+                    if (skill.offhandCost == 0) {
+                        MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND_ZERO.string, skillName, skill.offHandItemName));
+                    } else {
+                        MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
+                    }
                     event.setCancelled(true);
                     return;
                 } else {
                     boolean result = handleOffHandItemStack(player, offHand, skill.offhandCost, false);
                     if (!result) {
-                        MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
+                        if (skill.offhandCost == 0) {
+                            MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND_ZERO.string, skillName, skill.offHandItemName));
+                        } else {
+                            MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
+                        }
                         event.setCancelled(true);
                         return;
                     }
@@ -170,13 +178,21 @@ public class SkillInvokerEvent implements Listener {
             }
             if (!skill.offhand.isEmpty()) {
                 if (!skill.offhand.contains(offHand)) {
-                    MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
+                    if (skill.offhandCost == 0) {
+                        MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND_ZERO.string, skillName, skill.offHandItemName));
+                    } else {
+                        MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
+                    }
                     event.setCancelled(true);
                     return;
                 } else {
                     boolean result = handleOffHandItemStack(player, offHand, skill.offhandCost, false);
                     if (!result) {
-                        MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
+                        if (skill.offhandCost == 0) {
+                            MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND_ZERO.string, skillName, skill.offHandItemName));
+                        } else {
+                            MessageManager.ActionBarMessage(player, String.format(Notify.NEED_OFF_HAND.string, skillName, skill.offHandItemName, skill.offhandCost));
+                        }
                         event.setCancelled(true);
                         return;
                     }

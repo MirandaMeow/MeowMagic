@@ -255,6 +255,8 @@ public class Skill {
                     return line.replace("%chance%", this.listToString(this.chance, true, level));
                 case "distance":
                     return line.replace("%distance%", this.listToString(this.distance, false, level));
+                case "exp":
+                    return line.replace("%exp%", this.listToString(this.exp, false, level));
             }
         } else {
             return line;
